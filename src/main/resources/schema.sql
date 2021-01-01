@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS photos (
+    id INT NOT NULL AUTO_INCREMENT,
+    raw_photo BLOB NOT NULL,
+    PRIMARY KEY (id)
+);
