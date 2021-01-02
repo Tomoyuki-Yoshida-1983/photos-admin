@@ -8,7 +8,7 @@ public class PhotoDto {
 
     private byte[] rawPhoto;
 
-    private MultipartFile thumbnail;
+    private byte[] thumbnail;
 
     private String fileName;
 

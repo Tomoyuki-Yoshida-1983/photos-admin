@@ -1,5 +1,6 @@
 package jp.yoshida.photoadmin.service.impl;
 
+import jp.yoshida.photoadmin.common.util.PhotosUtil;
 import jp.yoshida.photoadmin.dao.PhotosDao;
 import jp.yoshida.photoadmin.dto.PhotoDto;
 import jp.yoshida.photoadmin.service.PhotosService;
@@ -30,6 +31,7 @@ public class PhotosServiceImpl implements PhotosService {
     public void addPhoto(@NonNull PhotoDto photoDto) throws IOException {
 
         String fileName = photoDto.getSendingPhoto().getOriginalFilename();
+        photoDto.setFileName(fileName);
         String extension = fileName.substring(fileName.lastIndexOf("."));
         switch (extension.toLowerCase()) {
             case ".jpg":
@@ -44,7 +46,8 @@ public class PhotosServiceImpl implements PhotosService {
             default:
                 break;
         }
-        photoDto.setFileName(fileName);
+
+        photoDto.setThumbnail(PhotosUtil.createThumbnail(photoDto.getSendingPhoto(), photoDto.getExtension()));
         photoDto.setRawPhoto(photoDto.getSendingPhoto().getBytes());
         photosDao.addPhoto(photoDto);
     }

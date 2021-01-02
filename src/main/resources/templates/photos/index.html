@@ -10,10 +10,10 @@
             <table>
                 <tr th:each="photo : ${photoForm.photoInDetailForms}">
                     <td>
-                        <p th:text="${photo.fileName}"></p>
+                        <img th:src="'data:image/' + ${photo.extension} + ';base64,' + ${photo.thumbnail}"/>
                     </td>
                     <td>
-                        <img th:src="'data:image/' + ${photo.extension} + ';base64,' + ${photo.rawPhoto}"/>
+                        <p th:text="${photo.fileName}"></p>
                     </td>
                 </tr>
             </table>
