@@ -1,11 +1,24 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>top page</title>
+    <title>写真管理システム</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
     <body>
         <p th:text="${msg}"></p>
+        <form action="#">
+            <table>
+                <tr th:each="photo : ${photoForm.photoInDetailForms}">
+                    <td>
+                        <p th:text="${photo.fileName}"></p>
+                    </td>
+                    <td>
+                        <img th:src="'data:image/' + ${photo.extension} + ';base64,' + ${photo.rawPhoto}"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+
         <form action="#" th:action="@{/}" th:object="${photoForm}" method="post" enctype="multipart/form-data">
             <p>アップロードする写真を選択： <input type="file" th:field="*{sendingPhoto}" /></p>
             <p><input type="submit" value="アップロード" /></p>

@@ -6,9 +6,13 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 public class PhotoInDetailForm {
 
-    private MultipartFile rawPhoto;
+    private String rawPhoto;
 
     private MultipartFile thumbnail;
+
+    private String fileName;
+
+    private String extension;
 
     private String width;
 
