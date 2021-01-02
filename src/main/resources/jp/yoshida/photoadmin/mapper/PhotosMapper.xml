@@ -5,7 +5,7 @@
 <mapper namespace="jp.yoshida.photoadmin.mapper.PhotosMapper">
     <select id="getPhotos" resultType="jp.yoshida.photoadmin.dto.PhotoDto">
         SELECT
-            raw_photo AS rawPhoto,
+            thumbnail AS thumbnail,
             file_name AS fileName,
             extension AS extension
         FROM
@@ -17,10 +17,12 @@
     <insert id="addPhoto" parameterType="jp.yoshida.photoadmin.dto.PhotoDto">
         INSERT INTO photos (
             raw_photo,
+            thumbnail,
             file_name,
             extension
         ) VALUES (
             #{rawPhoto},
+            #{thumbnail},
             #{fileName},
             #{extension}
         )

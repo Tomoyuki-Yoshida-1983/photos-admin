@@ -35,7 +35,7 @@ public class PhotosController {
         for (PhotoDto photoDto : photosService.getPhotos()) {
             PhotoInDetailForm photoInDetailForm = new PhotoInDetailForm();
             BeanUtils.copyProperties(photoDto, photoInDetailForm);
-            photoInDetailForm.setRawPhoto(Base64.getEncoder().encodeToString(photoDto.getRawPhoto()));
+            photoInDetailForm.setThumbnail(Base64.getEncoder().encodeToString(photoDto.getThumbnail()));
             photoInDetailForms.add(photoInDetailForm);
         }
 

@@ -8,7 +8,7 @@ public class PhotoInDetailForm {
 
     private String rawPhoto;
 
-    private MultipartFile thumbnail;
+    private String thumbnail;
 
     private String fileName;
 
