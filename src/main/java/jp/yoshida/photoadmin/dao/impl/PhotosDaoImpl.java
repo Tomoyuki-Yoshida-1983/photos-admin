@@ -7,11 +7,20 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
 public class PhotosDaoImpl implements PhotosDao {
 
     private final PhotosMapper photosMapper;
+
+    @NonNull
+    @Override
+    public List<PhotoDto> getPhotos() {
+
+        return photosMapper.getPhotos();
+    }
 
     @Override
     public void addPhoto(@NonNull PhotoDto photoDto) {
