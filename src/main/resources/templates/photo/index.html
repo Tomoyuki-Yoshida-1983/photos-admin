@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>写真管理システム</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+    <body>
+        <form action="#" th:object="${photoInDetailForm}">
+            <p th:text="*{fileName}"></p>
+            <p>
+                <img th:src="'data:image/' + *{extension} + ';base64,' + *{rawPhoto}"/>
+            </p>
+        </form>
+        <p th:object="${photoInDetailForm}">
+            <a th:if="*{prevId} != null" th:href="@{/photo/{id} (id = *{prevId})}">前の写真</a>
+            <span th:unless="*{prevId} != null">前の写真</span>
+            /
+            <a th:if="*{nextId} != null" th:href="@{/photo/{id} (id = *{nextId})}">次の写真</a>
+            <span th:unless="*{nextId} != null">次の写真</span>
+        </p>
+        <p><a th:href="@{/photos}">一覧画面へ戻る</a></p>
+    </body>
+</html>

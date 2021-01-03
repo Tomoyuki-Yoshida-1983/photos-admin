@@ -8,7 +8,8 @@
         <p th:text="${msg}"></p>
         <form action="#">
             <table>
-                <tr th:each="photo : ${photoForm.photoInDetailForms}">
+                <tr th:each="photo : ${photoForm.photoInDetailForms}"
+                        style="cursor: pointer" th:onclick="'jumpToPhoto(' + ${photo.id} + ')'">
                     <td>
                         <img th:src="'data:image/' + ${photo.extension} + ';base64,' + ${photo.thumbnail}"/>
                     </td>
@@ -19,9 +20,14 @@
             </table>
         </form>
 
-        <form action="#" th:action="@{/}" th:object="${photoForm}" method="post" enctype="multipart/form-data">
+        <form action="#" th:action="@{/add-photo}" th:object="${photoForm}" method="post" enctype="multipart/form-data">
             <p>アップロードする写真を選択： <input type="file" th:field="*{sendingPhoto}" /></p>
             <p><input type="submit" value="アップロード" /></p>
         </form>
+        <script type="text/javascript">
+            function jumpToPhoto(id = 0) {
+                location.href = "/photo/" + id;
+            }
+        </script>
     </body>
 </html>

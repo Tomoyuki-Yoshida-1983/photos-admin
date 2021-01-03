@@ -10,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -24,9 +25,9 @@ public class PhotosController {
 
     private final PhotosService photosService;
 
-    @GetMapping("/")
+    @GetMapping("/photos")
     @NonNull
-    public String index(
+    public String getPhotos(
             @NonNull RedirectAttributes redirectAttributes,
             @ModelAttribute @NonNull PhotoForm photoForm) {
 
@@ -43,7 +44,19 @@ public class PhotosController {
         return "photos/index";
     }
 
-    @PostMapping("/")
+    @GetMapping("/photo/{id}")
+    @NonNull
+    public String getPhoto(
+            @ModelAttribute @NonNull PhotoInDetailForm photoInDetailForm,
+            @PathVariable("id") @NonNull int id) {
+
+        PhotoDto photoDto = photosService.getPhoto(id);
+        BeanUtils.copyProperties(photoDto, photoInDetailForm);
+        photoInDetailForm.setRawPhoto(Base64.getEncoder().encodeToString(photoDto.getRawPhoto()));
+        return "photo/index";
+    }
+
+    @PostMapping("/add-photo")
     @NonNull
     public String addPhoto(
             @NonNull RedirectAttributes redirectAttributes,
@@ -53,7 +66,7 @@ public class PhotosController {
         BeanUtils.copyProperties(photoForm, photoDto);
         photosService.addPhoto(photoDto);
         redirectAttributes.addFlashAttribute("msg", "add-success");
-        return "redirect:/";
+        return "redirect:/photos";
     }
 
 }

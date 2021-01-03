@@ -6,6 +6,7 @@ import jp.yoshida.photoadmin.dto.PhotoDto;
 import jp.yoshida.photoadmin.service.PhotosService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,12 +19,31 @@ public class PhotosServiceImpl implements PhotosService {
 
     private final PhotosDao photosDao;
 
-    @Transactional
     @NonNull
     @Override
     public List<PhotoDto> getPhotos() {
 
         return photosDao.getPhotos();
+    }
+
+    @Nullable
+    @Override
+    public PhotoDto getPhoto(@NonNull int id) {
+
+        List<Integer> ids = photosDao.getPhotoIds();
+        PhotoDto photoDto = photosDao.getPhoto(id);
+
+        int currentIdx = ids.indexOf(id);
+
+        if (currentIdx >= 0 && ids.size() > currentIdx + 1) {
+            photoDto.setNextId(ids.get(currentIdx + 1));
+        }
+
+        if (currentIdx > 0) {
+            photoDto.setPrevId(ids.get(currentIdx - 1));
+        }
+
+        return photoDto;
     }
 
     @Transactional
