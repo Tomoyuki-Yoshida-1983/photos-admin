@@ -1,5 +1,6 @@
 package jp.yoshida.photoadmin.service.impl;
 
+import com.drew.imaging.ImageProcessingException;
 import jp.yoshida.photoadmin.common.util.PhotosUtil;
 import jp.yoshida.photoadmin.dao.PhotosDao;
 import jp.yoshida.photoadmin.dto.PhotoDto;
@@ -48,7 +49,7 @@ public class PhotosServiceImpl implements PhotosService {
 
     @Transactional
     @Override
-    public void addPhoto(@NonNull PhotoDto photoDto) throws IOException {
+    public void addPhoto(@NonNull PhotoDto photoDto) throws IOException, ImageProcessingException {
 
         String fileName = photoDto.getSendingPhoto().getOriginalFilename();
         photoDto.setFileName(fileName);
@@ -69,6 +70,7 @@ public class PhotosServiceImpl implements PhotosService {
 
         photoDto.setThumbnail(PhotosUtil.createThumbnail(photoDto.getSendingPhoto(), photoDto.getExtension()));
         photoDto.setRawPhoto(photoDto.getSendingPhoto().getBytes());
+        PhotosUtil.setMetaDatum(photoDto);
         photosDao.addPhoto(photoDto);
     }
 }

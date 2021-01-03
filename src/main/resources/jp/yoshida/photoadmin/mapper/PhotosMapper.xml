@@ -8,7 +8,12 @@
             id AS id,
             thumbnail AS thumbnail,
             file_name AS fileName,
-            extension AS extension
+            extension AS extension,
+            width AS width,
+            height AS height,
+            shooting_date_time AS shootingDateTime,
+            TRIM(CONCAT(latitude, ' ', latitude_ref)) AS latitude,
+            TRIM(CONCAT(longitude, ' ', longitude_ref)) AS longitude
         FROM
             photos
         ORDER BY
@@ -31,7 +36,12 @@
             id AS id,
             raw_photo AS rawPhoto,
             file_name AS fileName,
-            extension AS extension
+            extension AS extension,
+            width AS width,
+            height AS height,
+            shooting_date_time AS shootingDateTime,
+            TRIM(CONCAT(latitude, ' ', latitude_ref)) AS latitude,
+            TRIM(CONCAT(longitude, ' ', longitude_ref)) AS longitude
         FROM
             photos
         WHERE
@@ -46,12 +56,26 @@
             raw_photo,
             thumbnail,
             file_name,
-            extension
+            extension,
+            width,
+            height,
+            shooting_date_time,
+            latitude,
+            latitude_ref,
+            longitude,
+            longitude_ref
         ) VALUES (
             #{rawPhoto},
             #{thumbnail},
             #{fileName},
-            #{extension}
+            #{extension},
+            #{width, jdbcType=VARCHAR},
+            #{height, jdbcType=VARCHAR},
+            #{shootingDateTime, jdbcType=TIMESTAMP},
+            #{latitude, jdbcType=VARCHAR},
+            #{latitudeRef, jdbcType=VARCHAR},
+            #{longitude, jdbcType=VARCHAR},
+            #{longitudeRef, jdbcType=VARCHAR}
         )
     </insert>
 </mapper>

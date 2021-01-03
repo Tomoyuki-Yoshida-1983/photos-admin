@@ -1,5 +1,6 @@
 package jp.yoshida.photoadmin.service;
 
+import com.drew.imaging.ImageProcessingException;
 import jp.yoshida.photoadmin.dto.PhotoDto;
 import lombok.NonNull;
 import org.springframework.lang.Nullable;
@@ -15,5 +16,5 @@ public interface PhotosService {
     @Nullable
     PhotoDto getPhoto(@NonNull int id);
 
-    void addPhoto(@NonNull PhotoDto photoDto) throws IOException;
+    void addPhoto(@NonNull PhotoDto photoDto) throws IOException, ImageProcessingException;
 }

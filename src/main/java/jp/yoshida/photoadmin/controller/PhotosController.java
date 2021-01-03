@@ -1,5 +1,6 @@
 package jp.yoshida.photoadmin.controller;
 
+import com.drew.imaging.ImageProcessingException;
 import jp.yoshida.photoadmin.dto.PhotoDto;
 import jp.yoshida.photoadmin.form.PhotoForm;
 import jp.yoshida.photoadmin.form.PhotoInDetailForm;
@@ -60,7 +61,7 @@ public class PhotosController {
     @NonNull
     public String addPhoto(
             @NonNull RedirectAttributes redirectAttributes,
-            @ModelAttribute @NonNull PhotoForm photoForm) throws IOException {
+            @ModelAttribute @NonNull PhotoForm photoForm) throws IOException, ImageProcessingException {
 
         PhotoDto photoDto = new PhotoDto();
         BeanUtils.copyProperties(photoForm, photoDto);

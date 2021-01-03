@@ -5,8 +5,21 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
     <body>
+        <p th:object="${photoInDetailForm}">
+            <a th:if="*{prevId} != null" th:href="@{/photo/{id} (id = *{prevId})}">前の写真</a>
+            <span th:unless="*{prevId} != null">前の写真</span>
+            /
+            <a th:if="*{nextId} != null" th:href="@{/photo/{id} (id = *{nextId})}">次の写真</a>
+            <span th:unless="*{nextId} != null">次の写真</span>
+        </p>
+        <p><a th:href="@{/photos}">一覧画面へ戻る</a></p>
         <form action="#" th:object="${photoInDetailForm}">
-            <p th:text="*{fileName}"></p>
+            <p th:text="'ファイル名： ' + *{fileName}"></p>
+            <p th:text="'横幅： ' + *{width}"></p>
+            <p th:text="'高さ： ' + *{height}"></p>
+            <p th:text="'撮影日時： ' + *{shootingDateTime}"></p>
+            <p th:text="'緯度： ' + *{latitude}"></p>
+            <p th:text="'経度： ' + *{longitude}"></p>
             <p>
                 <img th:src="'data:image/' + *{extension} + ';base64,' + *{rawPhoto}"/>
             </p>
