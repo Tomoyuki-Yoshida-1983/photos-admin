@@ -5,6 +5,7 @@ import jp.yoshida.photoadmin.dto.PhotoDto;
 import jp.yoshida.photoadmin.mapper.PhotosMapper;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,6 +21,20 @@ public class PhotosDaoImpl implements PhotosDao {
     public List<PhotoDto> getPhotos() {
 
         return photosMapper.getPhotos();
+    }
+
+    @NonNull
+    @Override
+    public List<Integer> getPhotoIds() {
+
+        return photosMapper.getPhotoIds();
+    }
+
+    @Nullable
+    @Override
+    public PhotoDto getPhoto(@NonNull int id) {
+
+        return photosMapper.getPhoto(id);
     }
 
     @Override

@@ -6,6 +6,12 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 public class PhotoDto {
 
+    private Integer id;
+
+    private Integer nextId;
+
+    private Integer prevId;
+
     private byte[] rawPhoto;
 
     private byte[] thumbnail;

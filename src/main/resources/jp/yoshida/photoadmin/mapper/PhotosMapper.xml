@@ -5,13 +5,40 @@
 <mapper namespace="jp.yoshida.photoadmin.mapper.PhotosMapper">
     <select id="getPhotos" resultType="jp.yoshida.photoadmin.dto.PhotoDto">
         SELECT
+            id AS id,
             thumbnail AS thumbnail,
             file_name AS fileName,
             extension AS extension
         FROM
             photos
         ORDER BY
-            file_name
+            file_name,
+            id
+    </select>
+
+    <select id="getPhotoIds" resultType="Integer">
+        SELECT
+            id AS id
+        FROM
+            photos
+        ORDER BY
+            file_name,
+            id
+    </select>
+
+    <select id="getPhoto" resultType="jp.yoshida.photoadmin.dto.PhotoDto">
+        SELECT
+            id AS id,
+            raw_photo AS rawPhoto,
+            file_name AS fileName,
+            extension AS extension
+        FROM
+            photos
+        WHERE
+            id = #{id}
+        ORDER BY
+            file_name,
+            id
     </select>
 
     <insert id="addPhoto" parameterType="jp.yoshida.photoadmin.dto.PhotoDto">

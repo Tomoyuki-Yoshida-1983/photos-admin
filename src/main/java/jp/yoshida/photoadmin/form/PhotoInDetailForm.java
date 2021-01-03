@@ -1,10 +1,15 @@
 package jp.yoshida.photoadmin.form;
 
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class PhotoInDetailForm {
+
+    private Integer id;
+
+    private Integer nextId;
+
+    private Integer prevId;
 
     private String rawPhoto;
 
