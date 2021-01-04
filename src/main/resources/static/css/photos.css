@@ -1,0 +1,21 @@
+        .p-a-summary-table {
+            border-collapse: collapse;
+        }
+
+        .p-a-summary-table tr {
+            cursor: pointer;
+        }
+
+        .p-a-summary-table td {
+            border: 1px solid #000;
+        }
+
+        .p-a-summary-table td.p-a-bottom, .p-a-bottom {
+            border-bottom: 3px solid #000;
+        }
+
+        .p-a-summary-table img {
+            width: 180px;
+            height: 100px;
+            object-fit: cover;
+        }

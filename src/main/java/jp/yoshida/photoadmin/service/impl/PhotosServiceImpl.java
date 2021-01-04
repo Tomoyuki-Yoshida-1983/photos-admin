@@ -1,18 +1,25 @@
 package jp.yoshida.photoadmin.service.impl;
 
 import com.drew.imaging.ImageProcessingException;
+import jp.yoshida.photoadmin.PhotoEntity;
+import jp.yoshida.photoadmin.common.constant.NameConstants;
+import jp.yoshida.photoadmin.common.constant.StandardConstants;
 import jp.yoshida.photoadmin.common.util.PhotosUtil;
 import jp.yoshida.photoadmin.dao.PhotosDao;
 import jp.yoshida.photoadmin.dto.PhotoDto;
 import jp.yoshida.photoadmin.service.PhotosService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.lang.Nullable;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -22,55 +29,86 @@ public class PhotosServiceImpl implements PhotosService {
 
     @NonNull
     @Override
-    public List<PhotoDto> getPhotos() {
+    public List<PhotoEntity> getPhotos() {
 
-        return photosDao.getPhotos();
+        List<PhotoEntity> photoEntities = new ArrayList<>();
+
+        for (PhotoDto photoDto : photosDao.getPhotos()) {
+            PhotoEntity photoEntity = new PhotoEntity();
+            BeanUtils.copyProperties(photoDto, photoEntity);
+            photoEntity.setThumbnail(Base64.getEncoder().encodeToString(photoDto.getThumbnail()));
+
+            if (Objects.nonNull(photoDto.getShootingDateTime())) {
+                photoEntity.setShootingDateTime(
+                        StandardConstants.SIMPLE_DATE_FORMAT.format(photoDto.getShootingDateTime()));
+            }
+
+            photoEntities.add(photoEntity);
+        }
+
+        return photoEntities;
     }
 
-    @Nullable
+    @NonNull
     @Override
-    public PhotoDto getPhoto(@NonNull int id) {
+    public PhotoEntity getPhoto(@NonNull int id) {
 
         List<Integer> ids = photosDao.getPhotoIds();
         PhotoDto photoDto = photosDao.getPhoto(id);
 
         int currentIdx = ids.indexOf(id);
+        PhotoEntity photoEntity = new PhotoEntity();
+        BeanUtils.copyProperties(photoDto, photoEntity);
+        photoEntity.setRawPhoto(Base64.getEncoder().encodeToString(photoDto.getRawPhoto()));
+
+        if (Objects.nonNull(photoDto.getShootingDateTime())) {
+            photoEntity.setShootingDateTime(
+                    StandardConstants.SIMPLE_DATE_FORMAT.format(photoDto.getShootingDateTime()));
+        }
 
         if (currentIdx >= 0 && ids.size() > currentIdx + 1) {
-            photoDto.setNextId(ids.get(currentIdx + 1));
+            photoEntity.setNextId(ids.get(currentIdx + 1));
         }
 
         if (currentIdx > 0) {
-            photoDto.setPrevId(ids.get(currentIdx - 1));
+            photoEntity.setPrevId(ids.get(currentIdx - 1));
         }
 
-        return photoDto;
+        return photoEntity;
     }
 
     @Transactional
     @Override
-    public void addPhoto(@NonNull PhotoDto photoDto) throws IOException, ImageProcessingException {
+    public void addPhoto(@NonNull MultipartFile sendingPhoto) throws IOException, ImageProcessingException {
 
-        String fileName = photoDto.getSendingPhoto().getOriginalFilename();
+        String fileName = sendingPhoto.getOriginalFilename();
+        PhotoDto photoDto = new PhotoDto();
         photoDto.setFileName(fileName);
-        String extension = fileName.substring(fileName.lastIndexOf("."));
+        String extension = fileName.substring(fileName.lastIndexOf(NameConstants.SYMBOL_DOT));
+
         switch (extension.toLowerCase()) {
-            case ".jpg":
-            case ".jpeg":
-            case ".jpe":
-            case ".jfif":
-                photoDto.setExtension("jpeg");
+            case NameConstants.EXTENSION_DOT_JPG:
+            case NameConstants.EXTENSION_DOT_JPEG:
+            case NameConstants.EXTENSION_DOT_JPE:
+            case NameConstants.EXTENSION_DOT_JFIF:
+                photoDto.setExtension(NameConstants.EXTENSION_JPEG);
                 break;
-            case ".png":
-                photoDto.setExtension("png");
+            case NameConstants.EXTENSION_DOT_PNG:
+                photoDto.setExtension(NameConstants.EXTENSION_PNG);
                 break;
             default:
                 break;
         }
 
-        photoDto.setThumbnail(PhotosUtil.createThumbnail(photoDto.getSendingPhoto(), photoDto.getExtension()));
-        photoDto.setRawPhoto(photoDto.getSendingPhoto().getBytes());
-        PhotosUtil.setMetaDatum(photoDto);
+        photoDto.setThumbnail(PhotosUtil.createThumbnail(sendingPhoto, photoDto.getExtension()));
+        photoDto.setRawPhoto(sendingPhoto.getBytes());
+        PhotosUtil.setMetaDatum(photoDto, sendingPhoto);
         photosDao.addPhoto(photoDto);
+    }
+
+    @Override
+    public void deletePhotos(@NonNull int[] ids) {
+
+        photosDao.deletePhotos(ids);
     }
 }

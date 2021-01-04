@@ -31,7 +31,7 @@
             id
     </select>
 
-    <select id="getPhoto" resultType="jp.yoshida.photoadmin.dto.PhotoDto">
+    <select id="getPhoto" parameterType="_int" resultType="jp.yoshida.photoadmin.dto.PhotoDto">
         SELECT
             id AS id,
             raw_photo AS rawPhoto,
@@ -78,4 +78,15 @@
             #{longitudeRef, jdbcType=VARCHAR}
         )
     </insert>
+
+    <delete id="deletePhotos" parameterType="_int">
+        DELETE FROM
+            photos
+        WHERE
+            id IN(
+        <foreach collection="ids" item="id" separator=",">
+                #{id}
+        </foreach>
+            )
+    </delete>
 </mapper>

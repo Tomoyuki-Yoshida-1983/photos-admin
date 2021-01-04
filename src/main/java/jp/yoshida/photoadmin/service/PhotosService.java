@@ -1,9 +1,9 @@
 package jp.yoshida.photoadmin.service;
 
 import com.drew.imaging.ImageProcessingException;
-import jp.yoshida.photoadmin.dto.PhotoDto;
+import jp.yoshida.photoadmin.PhotoEntity;
 import lombok.NonNull;
-import org.springframework.lang.Nullable;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -11,10 +11,12 @@ import java.util.List;
 public interface PhotosService {
 
     @NonNull
-    List<PhotoDto> getPhotos();
+    List<PhotoEntity> getPhotos();
 
-    @Nullable
-    PhotoDto getPhoto(@NonNull int id);
+    @NonNull
+    PhotoEntity getPhoto(@NonNull int id);
 
-    void addPhoto(@NonNull PhotoDto photoDto) throws IOException, ImageProcessingException;
+    void addPhoto(@NonNull MultipartFile sendingPhoto) throws IOException, ImageProcessingException;
+
+    void deletePhotos(@NonNull int[] ids);
 }

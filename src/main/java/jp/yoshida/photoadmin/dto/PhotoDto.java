@@ -10,10 +10,6 @@ public class PhotoDto {
 
     private Integer id;
 
-    private Integer nextId;
-
-    private Integer prevId;
-
     private byte[] rawPhoto;
 
     private byte[] thumbnail;
@@ -35,7 +31,4 @@ public class PhotoDto {
     private String longitude;
 
     private String longitudeRef;
-
-    private MultipartFile sendingPhoto;
-
 }

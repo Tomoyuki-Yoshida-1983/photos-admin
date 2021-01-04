@@ -1,11 +1,13 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>写真管理システム</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-</head>
+    <head>
+        <title>写真管理システム</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link th:href="@{/css/photo.css}" rel="stylesheet" type="text/css">
+    </head>
     <body>
-        <p th:object="${photoInDetailForm}">
+    <h1>写真管理システム　写真詳細画面</h1>
+    <p th:object="${photoForm}">
             <a th:if="*{prevId} != null" th:href="@{/photo/{id} (id = *{prevId})}">前の写真</a>
             <span th:unless="*{prevId} != null">前の写真</span>
             /
@@ -13,18 +15,38 @@
             <span th:unless="*{nextId} != null">次の写真</span>
         </p>
         <p><a th:href="@{/photos}">一覧画面へ戻る</a></p>
-        <form action="#" th:object="${photoInDetailForm}">
-            <p th:text="'ファイル名： ' + *{fileName}"></p>
-            <p th:text="'横幅： ' + *{width}"></p>
-            <p th:text="'高さ： ' + *{height}"></p>
-            <p th:text="'撮影日時： ' + *{shootingDateTime}"></p>
-            <p th:text="'緯度： ' + *{latitude}"></p>
-            <p th:text="'経度： ' + *{longitude}"></p>
+        <form action="#" th:object="${photoForm}">
+            <table class="p-a-details-table">
+                <tr>
+                    <th>ファイル名</th>
+                    <td th:text="*{fileName}"></td>
+                </tr>
+                <tr>
+                    <th>横幅</th>
+                    <td th:text="*{width}"></td>
+                </tr>
+                <tr>
+                    <th>高さ</th>
+                    <td th:text="*{height}"></td>
+                </tr>
+                <tr>
+                    <th>撮影日時</th>
+                    <td th:text="*{shootingDateTime}"></td>
+                </tr>
+                <tr>
+                    <th>緯度</th>
+                    <td th:text="*{latitude}"></td>
+                </tr>
+                <tr>
+                    <th>経度</th>
+                    <td th:text="*{longitude}"></td>
+                </tr>
+            </table>
             <p>
                 <img th:src="'data:image/' + *{extension} + ';base64,' + *{rawPhoto}"/>
             </p>
         </form>
-        <p th:object="${photoInDetailForm}">
+        <p th:object="${photoForm}">
             <a th:if="*{prevId} != null" th:href="@{/photo/{id} (id = *{prevId})}">前の写真</a>
             <span th:unless="*{prevId} != null">前の写真</span>
             /

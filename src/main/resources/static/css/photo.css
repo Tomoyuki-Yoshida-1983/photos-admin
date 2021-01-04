@@ -1,0 +1,11 @@
+        .p-a-details-table {
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #000;
+        }
+
+        th {
+            text-align: right;
+        }

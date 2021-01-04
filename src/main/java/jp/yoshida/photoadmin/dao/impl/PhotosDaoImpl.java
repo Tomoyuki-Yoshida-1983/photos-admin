@@ -42,4 +42,10 @@ public class PhotosDaoImpl implements PhotosDao {
 
         photosMapper.addPhoto(photoDto);
     }
+
+    @Override
+    public void deletePhotos(@NonNull int[] ids) {
+
+        photosMapper.deletePhotos(ids);
+    }
 }
