@@ -9,3 +9,12 @@ function infoMessage(msg = "") {
         alert(msg);
     }
 }
+
+function preDeleteCheck() {
+
+    if (confirm("選択された写真を削除してよろしいですか？")) {
+        return true;
+    }
+
+    return false;
+}
