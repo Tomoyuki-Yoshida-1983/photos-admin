@@ -10,6 +10,8 @@ public class UrlConstants {
 
     public static final String REQUEST_DELETE_PHOTOS = "/delete-photos";
 
+    public static final String REQUEST_DELETE_PHOTO = "/delete-photo/{id}";
+
     public static final String RESPONSE_GET_PHOTOS = "photos/index";
 
     public static final String RESPONSE_GET_PHOTO = "photo/index";
