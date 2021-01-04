@@ -3,6 +3,7 @@ package jp.yoshida.photoadmin.mapper;
 import jp.yoshida.photoadmin.dto.PhotoDto;
 import lombok.NonNull;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.lang.Nullable;
 
 import java.util.List;
@@ -20,4 +21,6 @@ public interface PhotosMapper {
     PhotoDto getPhoto(@NonNull int id);
 
     void addPhoto(@NonNull PhotoDto photoDto);
+
+    void deletePhotos(@Param("ids") @NonNull int[] ids);
 }

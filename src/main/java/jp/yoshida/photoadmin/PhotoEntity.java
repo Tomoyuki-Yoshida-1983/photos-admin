@@ -1,11 +1,9 @@
-package jp.yoshida.photoadmin.form;
+package jp.yoshida.photoadmin;
 
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
-public class PhotoInDetailForm {
+public class PhotoEntity {
 
     private Integer id;
 
@@ -25,10 +23,9 @@ public class PhotoInDetailForm {
 
     private String height;
 
-    private Date shootingDateTime;
+    private String shootingDateTime;
 
     private String latitude;
 
     private String longitude;
-
 }

@@ -18,4 +18,6 @@ public interface PhotosDao {
     PhotoDto getPhoto(@NonNull int id);
 
     void addPhoto(@NonNull PhotoDto photoDto);
+
+    void deletePhotos(@NonNull int[] ids);
 }

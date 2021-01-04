@@ -6,6 +6,7 @@ import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.exif.ExifSubIFDDirectory;
 import com.drew.metadata.exif.GpsDirectory;
+import jp.yoshida.photoadmin.common.constant.StandardConstants;
 import jp.yoshida.photoadmin.dto.PhotoDto;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,13 +21,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 
 public class PhotosUtil {
 
-    public static byte[] createThumbnail(MultipartFile rawPhoto, String extension) throws IOException {
+    public static byte[] createThumbnail(MultipartFile sendingPhoto, String extension) throws IOException {
 
-        Path tempPath = PhotosUtil.createTempPath();
-        rawPhoto.transferTo(tempPath);
+        Path tempPath = Files.createTempFile(Paths.get(StandardConstants.JAVA_IO_TMPDIR),
+                StandardConstants.TMPDIR_PREFIX, StandardConstants.TMPDIR_SUFFIX);
+        sendingPhoto.transferTo(tempPath);
         BufferedImage originalImage = ImageIO.read(new FileInputStream(String.valueOf(tempPath)));
         File tempFile = new File(String.valueOf(tempPath));
         int originalHeight = originalImage.getHeight();
@@ -45,31 +48,29 @@ public class PhotosUtil {
         return baos.toByteArray();
     }
 
-    public static void setMetaDatum(PhotoDto photoDto) throws IOException, ImageProcessingException {
+    public static void setMetaDatum(
+            PhotoDto photoDto, MultipartFile sendingPhoto) throws IOException, ImageProcessingException {
 
-        Path tempPath = PhotosUtil.createTempPath();
-        photoDto.getSendingPhoto().transferTo(tempPath);
+        Path tempPath = Files.createTempFile(Paths.get(StandardConstants.JAVA_IO_TMPDIR),
+                StandardConstants.TMPDIR_PREFIX, StandardConstants.TMPDIR_SUFFIX);
+        sendingPhoto.transferTo(tempPath);
         File tempFile = new File(String.valueOf(tempPath));
         Metadata metadata = ImageMetadataReader.readMetadata(tempFile);
         Directory ifdDirectory = metadata.getFirstDirectoryOfType(ExifSubIFDDirectory.class);
-        Directory gpsDirectory = metadata.getFirstDirectoryOfType(GpsDirectory.class);
-        photoDto.setWidth(ifdDirectory.getDescription(ExifSubIFDDirectory.TAG_EXIF_IMAGE_WIDTH));
-        photoDto.setHeight(ifdDirectory.getDescription(ExifSubIFDDirectory.TAG_EXIF_IMAGE_HEIGHT));
-        photoDto.setShootingDateTime(ifdDirectory.getDate(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL));
-        photoDto.setLatitude(gpsDirectory.getDescription(ExifGPSTagSet.TAG_GPS_LATITUDE));
-        photoDto.setLatitudeRef(gpsDirectory.getDescription(ExifGPSTagSet.TAG_GPS_LATITUDE_REF));
-        photoDto.setLongitude(gpsDirectory.getDescription(ExifGPSTagSet.TAG_GPS_LONGITUDE));
-        photoDto.setLongitudeRef(gpsDirectory.getDescription(ExifGPSTagSet.TAG_GPS_LONGITUDE_REF));
-    }
 
-    public static Path createTempPath() throws IOException {
-
-        String tmpdir = System.getProperty("java.io.tmpdir");
-
-        if (tmpdir.endsWith(File.separator)) {
-            tmpdir = tmpdir.substring(0, tmpdir.length() - 1);
+        if (Objects.nonNull(ifdDirectory)) {
+            photoDto.setWidth(ifdDirectory.getDescription(ExifSubIFDDirectory.TAG_EXIF_IMAGE_WIDTH));
+            photoDto.setHeight(ifdDirectory.getDescription(ExifSubIFDDirectory.TAG_EXIF_IMAGE_HEIGHT));
+            photoDto.setShootingDateTime(ifdDirectory.getDate(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL));
         }
 
-        return Files.createTempFile(Paths.get(tmpdir), "prefix", ".suffix");
+        Directory gpsDirectory = metadata.getFirstDirectoryOfType(GpsDirectory.class);
+
+        if (Objects.nonNull(gpsDirectory)) {
+            photoDto.setLatitude(gpsDirectory.getDescription(ExifGPSTagSet.TAG_GPS_LATITUDE));
+            photoDto.setLatitudeRef(gpsDirectory.getDescription(ExifGPSTagSet.TAG_GPS_LATITUDE_REF));
+            photoDto.setLongitude(gpsDirectory.getDescription(ExifGPSTagSet.TAG_GPS_LONGITUDE));
+            photoDto.setLongitudeRef(gpsDirectory.getDescription(ExifGPSTagSet.TAG_GPS_LONGITUDE_REF));
+        }
     }
 }
