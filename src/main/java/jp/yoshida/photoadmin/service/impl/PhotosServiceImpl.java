@@ -1,9 +1,11 @@
 package jp.yoshida.photoadmin.service.impl;
 
-import com.drew.imaging.ImageProcessingException;
 import jp.yoshida.photoadmin.PhotoEntity;
+import jp.yoshida.photoadmin.common.constant.MessageConstants;
 import jp.yoshida.photoadmin.common.constant.NameConstants;
 import jp.yoshida.photoadmin.common.constant.StandardConstants;
+import jp.yoshida.photoadmin.common.exception.PhotosBusinessException;
+import jp.yoshida.photoadmin.common.exception.PhotosSystemException;
 import jp.yoshida.photoadmin.common.util.PhotosUtil;
 import jp.yoshida.photoadmin.dao.PhotosDao;
 import jp.yoshida.photoadmin.dto.PhotoDto;
@@ -15,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -51,12 +52,16 @@ public class PhotosServiceImpl implements PhotosService {
 
     @NonNull
     @Override
-    public PhotoEntity getPhoto(@NonNull int id) {
+    public PhotoEntity getPhoto(@NonNull int id) throws PhotosBusinessException {
 
         List<Integer> ids = photosDao.getPhotoIds();
         PhotoDto photoDto = photosDao.getPhoto(id);
-
         int currentIdx = ids.indexOf(id);
+
+        if (currentIdx == -1 || Objects.isNull(photoDto)) {
+            throw new PhotosBusinessException(MessageConstants.WARN_PHOTO_NOT_FOUND);
+        }
+
         PhotoEntity photoEntity = new PhotoEntity();
         BeanUtils.copyProperties(photoDto, photoEntity);
         photoEntity.setRawPhoto(Base64.getEncoder().encodeToString(photoDto.getRawPhoto()));
@@ -66,7 +71,7 @@ public class PhotosServiceImpl implements PhotosService {
                     StandardConstants.SIMPLE_DATE_FORMAT.format(photoDto.getShootingDateTime()));
         }
 
-        if (currentIdx >= 0 && ids.size() > currentIdx + 1) {
+        if (ids.size() > currentIdx + 1) {
             photoEntity.setNextId(ids.get(currentIdx + 1));
         }
 
@@ -79,11 +84,13 @@ public class PhotosServiceImpl implements PhotosService {
 
     @Transactional
     @Override
-    public void addPhoto(@NonNull MultipartFile sendingPhoto) throws IOException, ImageProcessingException {
+    public void addPhoto(
+            @NonNull MultipartFile sendingPhoto) throws PhotosBusinessException, PhotosSystemException {
 
         String fileName = sendingPhoto.getOriginalFilename();
         PhotoDto photoDto = new PhotoDto();
         photoDto.setFileName(fileName);
+        @SuppressWarnings("ConstantConditions")
         String extension = fileName.substring(fileName.lastIndexOf(NameConstants.SYMBOL_DOT));
 
         switch (extension.toLowerCase()) {
@@ -97,11 +104,16 @@ public class PhotosServiceImpl implements PhotosService {
                 photoDto.setExtension(NameConstants.EXTENSION_PNG);
                 break;
             default:
-                break;
+                throw new PhotosBusinessException(MessageConstants.ERROR_NOT_JPEG_NOR_PNG);
+        }
+
+        try {
+            photoDto.setRawPhoto(sendingPhoto.getBytes());
+        } catch (Exception e) {
+            throw new PhotosBusinessException(MessageConstants.ERROR_FILE_PROCESSING_FAILED);
         }
 
         photoDto.setThumbnail(PhotosUtil.createThumbnail(sendingPhoto, photoDto.getExtension()));
-        photoDto.setRawPhoto(sendingPhoto.getBytes());
         PhotosUtil.setMetaDatum(photoDto, sendingPhoto);
         photosDao.addPhoto(photoDto);
     }

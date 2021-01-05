@@ -1,10 +1,11 @@
 package jp.yoshida.photoadmin.controller;
 
-import com.drew.imaging.ImageProcessingException;
 import jp.yoshida.photoadmin.PhotoEntity;
 import jp.yoshida.photoadmin.common.constant.MessageConstants;
 import jp.yoshida.photoadmin.common.constant.NameConstants;
 import jp.yoshida.photoadmin.common.constant.UrlConstants;
+import jp.yoshida.photoadmin.common.exception.PhotosBusinessException;
+import jp.yoshida.photoadmin.common.exception.PhotosSystemException;
 import jp.yoshida.photoadmin.form.DeleteForm;
 import jp.yoshida.photoadmin.form.PhotoForm;
 import jp.yoshida.photoadmin.form.PhotosForm;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,9 +62,19 @@ public class PhotosController {
 
     @GetMapping(UrlConstants.REQUEST_GET_PHOTO)
     @NonNull
-    public String getPhoto(@NonNull PhotoForm photoForm, @PathVariable("id") @NonNull int id) {
+    public String getPhoto(
+            @NonNull RedirectAttributes redirectAttributes,
+            @NonNull PhotoForm photoForm,
+            @PathVariable("id") @NonNull int id) {
 
-        PhotoEntity photoEntity = photosService.getPhoto(id);
+        PhotoEntity photoEntity;
+        try {
+            photoEntity = photosService.getPhoto(id);
+        } catch (PhotosBusinessException e) {
+            redirectAttributes.addFlashAttribute(NameConstants.KEY_MESSAGE, e.getMessage());
+            return UrlConstants.REDIRECT_GET_PHOTOS;
+        }
+
         BeanUtils.copyProperties(photoEntity, photoForm);
         return UrlConstants.RESPONSE_GET_PHOTO;
     }
@@ -73,10 +83,15 @@ public class PhotosController {
     @NonNull
     public String addPhoto(
             @NonNull RedirectAttributes redirectAttributes,
-            @NonNull PhotoForm photoForm) throws IOException, ImageProcessingException {
+            @NonNull PhotoForm photoForm) throws PhotosSystemException {
 
-        photosService.addPhoto(photoForm.getSendingPhoto());
-        redirectAttributes.addFlashAttribute(NameConstants.KEY_MESSAGE, MessageConstants.INFO_ADD_SUCCESS);
+        try {
+            photosService.addPhoto(photoForm.getSendingPhoto());
+            redirectAttributes.addFlashAttribute(NameConstants.KEY_MESSAGE, MessageConstants.INFO_ADD_SUCCESS);
+        } catch (PhotosBusinessException e) {
+            redirectAttributes.addFlashAttribute(NameConstants.KEY_MESSAGE, e.getMessage());
+        }
+
         return UrlConstants.REDIRECT_GET_PHOTOS;
     }
 
