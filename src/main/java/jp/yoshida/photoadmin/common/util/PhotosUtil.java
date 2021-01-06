@@ -44,7 +44,9 @@ public class PhotosUtil {
         }
 
         try {
-            BufferedImage originalImage = ImageIO.read(new FileInputStream(String.valueOf(tempPath)));
+            FileInputStream fileInputStream = new FileInputStream(String.valueOf(tempPath));
+            BufferedImage originalImage = ImageIO.read(fileInputStream);
+            fileInputStream.close();
             File tempFile = new File(String.valueOf(tempPath));
             int originalHeight = originalImage.getHeight();
             int thumbnailHeight = 100;
