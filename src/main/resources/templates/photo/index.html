@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="jp">
     <head>
         <title>写真管理システム</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link th:href="@{/css/photo.css}" rel="stylesheet" type="text/css">
     </head>
     <body>
@@ -18,7 +18,7 @@
                 この写真をダウンロード
             </a>
             &nbsp;&nbsp;
-            <input type="submit" value="この写真を削除" onclick="return preDeleteCheck()" />
+            <input type="submit" value="この写真を削除" onclick="return preDeleteCheck()">
         </form>
         <p><a th:href="@{/photos}">写真一覧画面へ戻る</a></p>
         <hr>
@@ -51,7 +51,7 @@
             </table>
             <hr>
             <p>
-                <img th:src="'data:image/' + *{extension} + ';base64,' + *{rawPhoto}"/>
+                <img th:src="'data:image/' + *{extension} + ';base64,' + *{rawPhoto}">
             </p>
         </form>
         <hr>
@@ -66,7 +66,7 @@
                 この写真をダウンロード
             </a>
             &nbsp;&nbsp;
-            <input type="submit" value="この写真を削除" onclick="return preDeleteCheck()" />
+            <input type="submit" value="この写真を削除" onclick="return preDeleteCheck()">
         </form>
         <p><a th:href="@{/photos}">写真一覧画面へ戻る</a></p>
         <hr>
