@@ -5,80 +5,82 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link th:href="@{/css/photos.css}" rel="stylesheet" type="text/css">
     </head>
-    <body th:onload="initialize()">
+    <body th:onload="PhotosJs.initialize()">
         <h1>写真管理システム　写真一覧画面</h1>
-        <p th:if="${photosForm.photoForms.size() gt 0}">画像をクリックすると大きな写真が見られます</p>
-        <p th:unless="${photosForm.photoForms.size() gt 0}">まだ写真が登録されていません</p>
-        <hr>
-        <form name="summaryForm" action="#" th:action="@{/delete-photos}" th:object="${deleteForm}" method="post">
-            <table class="p-a-summary-table">
-                <th:block th:each="photo : ${photosForm.photoForms}">
-                    <th:block th:each="seq : ${#numbers.sequence(1, 2)}">
-                        <tr th:if="${seq} == 1">
-                            <td rowspan="2" class="p-a-bottom" th:onclick="'jumpToPhoto(' + ${photo.id} + ')'">
-                                <img th:src="'data:image/' + ${photo.extension} + ';base64,' + ${photo.thumbnail}">
-                            </td>
-                            <td>
-                                <p>ファイル名</p>
-                            </td>
-                            <td>
-                                <p>横幅</p>
-                            </td>
-                            <td>
-                                <p>高さ</p>
-                            </td>
-                            <td>
-                                <p>撮影日時</p>
-                            </td>
-                            <td>
-                                <p>緯度</p>
-                            </td>
-                            <td>
-                                <p>経度</p>
-                            </td>
-                            <td>
-                                <p>削除</p>
-                            </td>
-                        </tr>
-                        <tr th:if="${seq} == 2" class="p-a-bottom">
-                            <td>
-                                <p th:text="${photo.fileName}"></p>
-                            </td>
-                            <td>
-                                <p th:text="${photo.width}"></p>
-                            </td>
-                            <td>
-                                <p th:text="${photo.height}"></p>
-                            </td>
-                            <td>
-                                <p th:text="${photo.shootingDateTime}"></p>
-                            </td>
-                            <td>
-                                <p th:text="${photo.latitude}"></p>
-                            </td>
-                            <td>
-                                <p th:text="${photo.longitude}"></p>
-                            </td>
-                            <td>
-                                <input type="checkbox" th:id="'deleteId' + ${photo.id}"
-                                        th:field="*{deleteIds}" th:value="${photo.id}">
-                            </td>
-                        </tr>
+        <p th:if="${photosForm.photoForms.size() == 0}">まだ写真が登録されていません</p>
+        <div th:if="${photosForm.photoForms.size() gt 0}">
+            <p>画像をクリックすると大きな写真が見られます</p>
+            <hr>
+            <form name="summaryForm" action="#" th:action="@{/delete-photos}" th:object="${deleteForm}" method="post">
+                <table class="p-a-summary-table">
+                    <th:block th:each="photo : ${photosForm.photoForms}">
+                        <th:block th:each="seq : ${#numbers.sequence(1, 2)}">
+                            <tr th:if="${seq} == 1">
+                                <td rowspan="2" class="p-a-bottom" th:onclick="'PhotosJs.jumpToPhoto(' + ${photo.id} + ')'">
+                                    <img th:src="'data:' + ${photo.mimeType} + ';base64,' + ${photo.thumbnail}">
+                                </td>
+                                <td>
+                                    <p>ファイル名</p>
+                                </td>
+                                <td>
+                                    <p>横幅</p>
+                                </td>
+                                <td>
+                                    <p>高さ</p>
+                                </td>
+                                <td>
+                                    <p>撮影日時</p>
+                                </td>
+                                <td>
+                                    <p>緯度</p>
+                                </td>
+                                <td>
+                                    <p>経度</p>
+                                </td>
+                                <td>
+                                    <p>削除</p>
+                                </td>
+                            </tr>
+                            <tr th:if="${seq} == 2" class="p-a-bottom">
+                                <td>
+                                    <p th:text="${photo.fileName}"></p>
+                                </td>
+                                <td>
+                                    <p th:text="${photo.width}"></p>
+                                </td>
+                                <td>
+                                    <p th:text="${photo.height}"></p>
+                                </td>
+                                <td>
+                                    <p th:text="${photo.shootingDateTime}"></p>
+                                </td>
+                                <td>
+                                    <p th:text="${photo.latitude}"></p>
+                                </td>
+                                <td>
+                                    <p th:text="${photo.longitude}"></p>
+                                </td>
+                                <td>
+                                    <input type="checkbox" th:id="'deleteId' + ${photo.id}"
+                                            th:field="*{deleteIds}" th:value="${photo.id}">
+                                </td>
+                            </tr>
+                        </th:block>
                     </th:block>
-                </th:block>
-            </table>
-            <p>
-                削除チェックボックスをオンにした写真を一括で削除：
-                <input type="submit" value="削除を実行" onclick="return preDeleteCheck()">
-            </p>
-        </form>
+                </table>
+                <p th:if="${photosForm.photoForms.size() gt 0}">
+                    削除チェックボックスをオンにした写真を一括で削除：
+                    <input type="submit" value="削除を実行" onclick="return PhotosJs.preDeleteCheck()">
+                </p>
+            </form>
+        </div>
         <hr>
         <form name="sendingPhotoForm" action="#" th:action="@{/add-photo}"
                 th:object="${photoForm}" method="post" enctype="multipart/form-data">
             <p>
                 アップロードする写真を選択：
-                <input type="file" th:field="*{sendingPhoto}">
-                <input type="submit" value="アップロードを実行" onclick="return preSendCheck()">
+                <input type="file" th:field="*{sendingPhoto}" accept="image/*" required>
+                <input type="submit" value="アップロードを実行" onclick="return PhotosJs.preSendCheck()">
             </p>
         </form>
         <hr>

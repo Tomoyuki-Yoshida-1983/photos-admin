@@ -8,8 +8,13 @@ public class MessageConstants {
 
     public static final String WARN_PHOTO_NOT_FOUND = "該当の写真は存在しないか、既に削除されています。";
 
-    public static final String ERROR_NOT_JPEG_NOR_PNG
-            = "ファイルの拡張子は以下のいずれかを使用してください。\n.jpg .jpeg .jpe .jfif .png";
+    public static final String ERROR_NOT_CHECKED = "削除する写真のチェックボックスをチェックしてください。";
+
+    public static final String ERROR_NO_FILE = "アップロードする写真を選択してください。";
+
+    public static final String ERROR_FILE_SIZE_EXCEED = "ファイルサイズは10MB以内にしてください。";
+
+    public static final String ERROR_NOT_IMAGE = "写真または画像ファイルをアップロードしてください。";
 
     public static final String ERROR_TEMP_FILE_PROCESSING_FAILED = "一時ファイルの処理に失敗しました。";
 

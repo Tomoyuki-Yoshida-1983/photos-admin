@@ -31,7 +31,7 @@ public class PhotosUtil {
     @NonNull
     public static byte[] createThumbnail(
             @NonNull MultipartFile sendingPhoto,
-            @NonNull String extension) throws PhotosBusinessException, PhotosSystemException {
+            @NonNull String formatName) throws PhotosBusinessException, PhotosSystemException {
 
         Path tempPath;
 
@@ -59,7 +59,7 @@ public class PhotosUtil {
                     thumbnailWidth, thumbnailHeight, Image.SCALE_SMOOTH), 0, 0, null);
             Files.delete(tempPath);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(thumbnail, extension, baos);
+            ImageIO.write(thumbnail, formatName, baos);
 
             return baos.toByteArray();
         } catch (Exception e) {

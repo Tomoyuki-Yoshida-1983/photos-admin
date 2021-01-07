@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequiredArgsConstructor
@@ -85,8 +87,20 @@ public class PhotosController {
             @NonNull RedirectAttributes redirectAttributes,
             @NonNull PhotoForm photoForm) throws PhotosSystemException {
 
+        MultipartFile sendingPhoto = photoForm.getSendingPhoto();
+
         try {
-            photosService.addPhoto(photoForm.getSendingPhoto());
+            if (Objects.isNull(sendingPhoto)) {
+                throw new PhotosBusinessException(MessageConstants.ERROR_NO_FILE);
+            }
+
+            String mimeType = sendingPhoto.getContentType();
+
+            if (Objects.isNull(mimeType) || !mimeType.matches(NameConstants.MIME_TYPE_ANY_IMAGE)) {
+                throw new PhotosBusinessException(MessageConstants.ERROR_NOT_IMAGE);
+            }
+
+            photosService.addPhoto(sendingPhoto);
             redirectAttributes.addFlashAttribute(NameConstants.KEY_MESSAGE, MessageConstants.INFO_ADD_SUCCESS);
         } catch (PhotosBusinessException e) {
             redirectAttributes.addFlashAttribute(NameConstants.KEY_MESSAGE, e.getMessage());

@@ -2,7 +2,6 @@ package jp.yoshida.photoadmin.service.impl;
 
 import jp.yoshida.photoadmin.PhotoEntity;
 import jp.yoshida.photoadmin.common.constant.MessageConstants;
-import jp.yoshida.photoadmin.common.constant.NameConstants;
 import jp.yoshida.photoadmin.common.constant.StandardConstants;
 import jp.yoshida.photoadmin.common.exception.PhotosBusinessException;
 import jp.yoshida.photoadmin.common.exception.PhotosSystemException;
@@ -87,25 +86,9 @@ public class PhotosServiceImpl implements PhotosService {
     public void addPhoto(
             @NonNull MultipartFile sendingPhoto) throws PhotosBusinessException, PhotosSystemException {
 
-        String fileName = sendingPhoto.getOriginalFilename();
         PhotoDto photoDto = new PhotoDto();
-        photoDto.setFileName(fileName);
-        @SuppressWarnings("ConstantConditions")
-        String extension = fileName.substring(fileName.lastIndexOf(NameConstants.SYMBOL_DOT));
-
-        switch (extension.toLowerCase()) {
-            case NameConstants.EXTENSION_DOT_JPG:
-            case NameConstants.EXTENSION_DOT_JPEG:
-            case NameConstants.EXTENSION_DOT_JPE:
-            case NameConstants.EXTENSION_DOT_JFIF:
-                photoDto.setExtension(NameConstants.EXTENSION_JPEG);
-                break;
-            case NameConstants.EXTENSION_DOT_PNG:
-                photoDto.setExtension(NameConstants.EXTENSION_PNG);
-                break;
-            default:
-                throw new PhotosBusinessException(MessageConstants.ERROR_NOT_JPEG_NOR_PNG);
-        }
+        photoDto.setFileName(sendingPhoto.getOriginalFilename());
+        photoDto.setMimeType(sendingPhoto.getContentType());
 
         try {
             photoDto.setRawPhoto(sendingPhoto.getBytes());
@@ -113,7 +96,8 @@ public class PhotosServiceImpl implements PhotosService {
             throw new PhotosBusinessException(MessageConstants.ERROR_FILE_PROCESSING_FAILED);
         }
 
-        photoDto.setThumbnail(PhotosUtil.createThumbnail(sendingPhoto, photoDto.getExtension()));
+        String formatName = sendingPhoto.getContentType().replaceAll(".*/", "");
+        photoDto.setThumbnail(PhotosUtil.createThumbnail(sendingPhoto, formatName));
         PhotosUtil.setMetaDatum(photoDto, sendingPhoto);
         photosDao.addPhoto(photoDto);
     }
