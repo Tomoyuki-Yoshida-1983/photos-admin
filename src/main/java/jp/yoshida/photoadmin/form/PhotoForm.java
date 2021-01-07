@@ -18,7 +18,7 @@ public class PhotoForm {
 
     private String fileName;
 
-    private String extension;
+    private String mimeType;
 
     private String width;
 

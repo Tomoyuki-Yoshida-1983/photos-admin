@@ -17,7 +17,7 @@ public class PhotoEntity {
 
     private String fileName;
 
-    private String extension;
+    private String mimeType;
 
     private String width;
 

@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS photos (
     raw_photo BLOB NOT NULL,
     thumbnail BLOB NOT NULL,
     file_name VARCHAR NOT NULL,
-    extension VARCHAR NOT NULL,
+    mime_type VARCHAR NOT NULL,
     width VARCHAR NULL,
     height VARCHAR NULL,
     shooting_date_time TIMESTAMP NULL,
