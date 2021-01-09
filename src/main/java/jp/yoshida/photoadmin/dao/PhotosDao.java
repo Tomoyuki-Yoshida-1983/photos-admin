@@ -1,6 +1,6 @@
 package jp.yoshida.photoadmin.dao;
 
-import jp.yoshida.photoadmin.dto.PhotoDto;
+import jp.yoshida.photoadmin.dao.entity.Photo;
 import lombok.NonNull;
 import org.springframework.lang.Nullable;
 
@@ -9,15 +9,15 @@ import java.util.List;
 public interface PhotosDao {
 
     @NonNull
-    List<PhotoDto> getPhotos();
+    List<Photo> getPhotos();
 
     @NonNull
     List<Integer> getPhotoIds();
 
     @Nullable
-    PhotoDto getPhoto(@NonNull int id);
+    Photo getPhoto(@NonNull int id);
 
-    void addPhoto(@NonNull PhotoDto photoDto);
+    void addPhoto(@NonNull Photo photo);
 
     void deletePhotos(@NonNull int[] ids);
 }

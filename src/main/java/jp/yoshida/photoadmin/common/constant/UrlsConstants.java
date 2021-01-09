@@ -1,6 +1,6 @@
 package jp.yoshida.photoadmin.common.constant;
 
-public class UrlConstants {
+public class UrlsConstants {
 
     public static final String REQUEST_GET_PHOTOS = "/photos";
 

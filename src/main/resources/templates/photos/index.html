@@ -16,8 +16,9 @@
                     <th:block th:each="photo : ${photosForm.photoForms}">
                         <th:block th:each="seq : ${#numbers.sequence(1, 2)}">
                             <tr th:if="${seq} == 1">
-                                <td rowspan="2" class="p-a-bottom" th:onclick="'PhotosJs.jumpToPhoto(' + ${photo.id} + ')'">
-                                    <img th:src="'data:' + ${photo.mimeType} + ';base64,' + ${photo.thumbnail}">
+                                <td rowspan="2" class="p-a-bottom"
+                                        th:onclick="'PhotosJs.jumpToPhoto(' + ${photo.id} + ')'">
+                                    <img th:src="'data:image/jpg;base64,' + ${photo.thumbnail}">
                                 </td>
                                 <td>
                                     <p>ファイル名</p>

@@ -1,4 +1,4 @@
-package jp.yoshida.photoadmin.form;
+package jp.yoshida.photoadmin.controller.form;
 
 import lombok.Data;
 
