@@ -1,9 +1,9 @@
-package jp.yoshida.photoadmin;
+package jp.yoshida.photoadmin.service.dto;
 
 import lombok.Data;
 
 @Data
-public class PhotoEntity {
+public class PhotoDto {
 
     private Integer id;
 

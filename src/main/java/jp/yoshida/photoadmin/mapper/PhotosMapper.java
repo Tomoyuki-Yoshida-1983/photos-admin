@@ -1,6 +1,6 @@
 package jp.yoshida.photoadmin.mapper;
 
-import jp.yoshida.photoadmin.dto.PhotoDto;
+import jp.yoshida.photoadmin.dao.entity.Photo;
 import lombok.NonNull;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -12,15 +12,15 @@ import java.util.List;
 public interface PhotosMapper {
 
     @NonNull
-    List<PhotoDto> getPhotos();
+    List<Photo> getPhotos();
 
     @NonNull
     List<Integer> getPhotoIds();
 
     @Nullable
-    PhotoDto getPhoto(@NonNull int id);
+    Photo getPhoto(@NonNull int id);
 
-    void addPhoto(@NonNull PhotoDto photoDto);
+    void addPhoto(@NonNull Photo photo);
 
     void deletePhotos(@Param("ids") @NonNull int[] ids);
 }

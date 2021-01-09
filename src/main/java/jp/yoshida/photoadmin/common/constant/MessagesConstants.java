@@ -1,6 +1,6 @@
 package jp.yoshida.photoadmin.common.constant;
 
-public class MessageConstants {
+public class MessagesConstants {
 
     public static final String INFO_ADD_SUCCESS = "写真を登録しました。";
 
@@ -12,9 +12,7 @@ public class MessageConstants {
 
     public static final String ERROR_NO_FILE = "アップロードする写真を選択してください。";
 
-    public static final String ERROR_FILE_SIZE_EXCEED = "ファイルサイズは10MB以内にしてください。";
-
-    public static final String ERROR_NOT_IMAGE = "写真または画像ファイルをアップロードしてください。";
+    public static final String ERROR_FILE_NAME_IS_EMPTY = "ファイル名を入力してください。";
 
     public static final String ERROR_TEMP_FILE_PROCESSING_FAILED = "一時ファイルの処理に失敗しました。";
 

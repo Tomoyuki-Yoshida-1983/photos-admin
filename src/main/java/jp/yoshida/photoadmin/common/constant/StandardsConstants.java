@@ -4,13 +4,13 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
-public class StandardConstants {
+public class StandardsConstants {
 
     public static final String JAVA_IO_TMPDIR;
 
-    public static final String TMPDIR_PREFIX = "prefix";
+    public static final String TMPDIR_PREFIX = "p-a-";
 
-    public static final String TMPDIR_SUFFIX = ".suffix";
+    public static final String TMPDIR_SUFFIX = ".tmp";
 
     public static final SimpleDateFormat SIMPLE_DATE_FORMAT;
 

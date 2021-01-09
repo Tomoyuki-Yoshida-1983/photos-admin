@@ -1,7 +1,7 @@
 package jp.yoshida.photoadmin.dao.impl;
 
 import jp.yoshida.photoadmin.dao.PhotosDao;
-import jp.yoshida.photoadmin.dto.PhotoDto;
+import jp.yoshida.photoadmin.dao.entity.Photo;
 import jp.yoshida.photoadmin.mapper.PhotosMapper;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ public class PhotosDaoImpl implements PhotosDao {
 
     @NonNull
     @Override
-    public List<PhotoDto> getPhotos() {
+    public List<Photo> getPhotos() {
 
         return photosMapper.getPhotos();
     }
@@ -32,15 +32,15 @@ public class PhotosDaoImpl implements PhotosDao {
 
     @Nullable
     @Override
-    public PhotoDto getPhoto(@NonNull int id) {
+    public Photo getPhoto(@NonNull int id) {
 
         return photosMapper.getPhoto(id);
     }
 
     @Override
-    public void addPhoto(@NonNull PhotoDto photoDto) {
+    public void addPhoto(@NonNull Photo photo) {
 
-        photosMapper.addPhoto(photoDto);
+        photosMapper.addPhoto(photo);
     }
 
     @Override

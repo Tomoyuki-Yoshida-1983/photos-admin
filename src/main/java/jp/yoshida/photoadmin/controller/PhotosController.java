@@ -1,19 +1,21 @@
 package jp.yoshida.photoadmin.controller;
 
-import jp.yoshida.photoadmin.PhotoEntity;
-import jp.yoshida.photoadmin.common.constant.MessageConstants;
-import jp.yoshida.photoadmin.common.constant.NameConstants;
-import jp.yoshida.photoadmin.common.constant.UrlConstants;
+import jp.yoshida.photoadmin.common.constant.KeyWordsConstants;
+import jp.yoshida.photoadmin.common.constant.MessagesConstants;
+import jp.yoshida.photoadmin.common.constant.UrlsConstants;
 import jp.yoshida.photoadmin.common.exception.PhotosBusinessException;
 import jp.yoshida.photoadmin.common.exception.PhotosSystemException;
-import jp.yoshida.photoadmin.form.DeleteForm;
-import jp.yoshida.photoadmin.form.PhotoForm;
-import jp.yoshida.photoadmin.form.PhotosForm;
+import jp.yoshida.photoadmin.controller.form.DeleteForm;
+import jp.yoshida.photoadmin.controller.form.PhotoForm;
+import jp.yoshida.photoadmin.controller.form.PhotosForm;
 import jp.yoshida.photoadmin.service.PhotosService;
+import jp.yoshida.photoadmin.service.dto.PhotoDto;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,9 +23,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 @Controller
 @RequiredArgsConstructor
@@ -46,84 +49,102 @@ public class PhotosController {
         return new DeleteForm();
     }
 
-    @GetMapping(UrlConstants.REQUEST_GET_PHOTOS)
+    @GetMapping(UrlsConstants.REQUEST_GET_PHOTOS)
     @NonNull
     public String getPhotos(@NonNull RedirectAttributes redirectAttributes, @NonNull PhotosForm photosForm) {
 
         List<PhotoForm> photoForms = new ArrayList<>();
 
-        for (PhotoEntity photoEntity : photosService.getPhotos()) {
+        for (PhotoDto photoDto : photosService.getPhotos()) {
             PhotoForm tempPhotoForm = new PhotoForm();
-            BeanUtils.copyProperties(photoEntity, tempPhotoForm);
+            BeanUtils.copyProperties(photoDto, tempPhotoForm);
             photoForms.add(tempPhotoForm);
         }
 
         photosForm.setPhotoForms(photoForms);
-        return UrlConstants.RESPONSE_GET_PHOTOS;
+        return UrlsConstants.RESPONSE_GET_PHOTOS;
     }
 
-    @GetMapping(UrlConstants.REQUEST_GET_PHOTO)
+    @GetMapping(UrlsConstants.REQUEST_GET_PHOTO)
     @NonNull
     public String getPhoto(
             @NonNull RedirectAttributes redirectAttributes,
             @NonNull PhotoForm photoForm,
             @PathVariable("id") @NonNull int id) {
 
-        PhotoEntity photoEntity;
+        PhotoDto photoDto;
         try {
-            photoEntity = photosService.getPhoto(id);
+            photoDto = photosService.getPhoto(id);
         } catch (PhotosBusinessException e) {
-            redirectAttributes.addFlashAttribute(NameConstants.KEY_MESSAGE, e.getMessage());
-            return UrlConstants.REDIRECT_GET_PHOTOS;
+            redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_MESSAGE, e.getMessage());
+            return UrlsConstants.REDIRECT_GET_PHOTOS;
         }
 
-        BeanUtils.copyProperties(photoEntity, photoForm);
-        return UrlConstants.RESPONSE_GET_PHOTO;
+        BeanUtils.copyProperties(photoDto, photoForm);
+        return UrlsConstants.RESPONSE_GET_PHOTO;
     }
 
-    @PostMapping(UrlConstants.REQUEST_ADD_PHOTO)
+    @PostMapping(UrlsConstants.REQUEST_ADD_PHOTO)
     @NonNull
     public String addPhoto(
             @NonNull RedirectAttributes redirectAttributes,
-            @NonNull PhotoForm photoForm) throws PhotosSystemException {
-
-        MultipartFile sendingPhoto = photoForm.getSendingPhoto();
+            @Valid @NonNull PhotoForm photoForm,
+            @NonNull BindingResult bindingResult) throws PhotosSystemException {
 
         try {
-            if (Objects.isNull(sendingPhoto)) {
-                throw new PhotosBusinessException(MessageConstants.ERROR_NO_FILE);
-            }
-
-            String mimeType = sendingPhoto.getContentType();
-
-            if (Objects.isNull(mimeType) || !mimeType.matches(NameConstants.MIME_TYPE_ANY_IMAGE)) {
-                throw new PhotosBusinessException(MessageConstants.ERROR_NOT_IMAGE);
-            }
-
+            createErrorMessages(bindingResult);
+            MultipartFile sendingPhoto = photoForm.getSendingPhoto();
             photosService.addPhoto(sendingPhoto);
-            redirectAttributes.addFlashAttribute(NameConstants.KEY_MESSAGE, MessageConstants.INFO_ADD_SUCCESS);
         } catch (PhotosBusinessException e) {
-            redirectAttributes.addFlashAttribute(NameConstants.KEY_MESSAGE, e.getMessage());
+            redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_MESSAGE, e.getMessage());
+            return UrlsConstants.REDIRECT_GET_PHOTOS;
         }
 
-        return UrlConstants.REDIRECT_GET_PHOTOS;
+        redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_MESSAGE, MessagesConstants.INFO_ADD_SUCCESS);
+        return UrlsConstants.REDIRECT_GET_PHOTOS;
     }
 
-    @PostMapping(UrlConstants.REQUEST_DELETE_PHOTOS)
+    @PostMapping(UrlsConstants.REQUEST_DELETE_PHOTOS)
     @NonNull
-    public String deletePhotos(@NonNull RedirectAttributes redirectAttributes, @NonNull DeleteForm deleteForm) {
+    public String deletePhotos(
+            @NonNull RedirectAttributes redirectAttributes,
+            @Valid @NonNull DeleteForm deleteForm,
+            @NonNull BindingResult bindingResult) {
+
+        try {
+            createErrorMessages(bindingResult);
+        } catch (PhotosBusinessException e) {
+            redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_MESSAGE, e.getMessage());
+            return UrlsConstants.REDIRECT_GET_PHOTOS;
+        }
 
         photosService.deletePhotos(deleteForm.getDeleteIds());
-        redirectAttributes.addFlashAttribute(NameConstants.KEY_MESSAGE, MessageConstants.INFO_DELETE_SUCCESS);
-        return UrlConstants.REDIRECT_GET_PHOTOS;
+        redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_MESSAGE, MessagesConstants.INFO_DELETE_SUCCESS);
+        return UrlsConstants.REDIRECT_GET_PHOTOS;
     }
 
-    @PostMapping(UrlConstants.REQUEST_DELETE_PHOTO)
+    @PostMapping(UrlsConstants.REQUEST_DELETE_PHOTO)
     @NonNull
     public String deletePhoto(@NonNull RedirectAttributes redirectAttributes, @PathVariable("id") @NonNull int id) {
 
         photosService.deletePhotos(new int[] {id});
-        redirectAttributes.addFlashAttribute(NameConstants.KEY_MESSAGE, MessageConstants.INFO_DELETE_SUCCESS);
-        return UrlConstants.REDIRECT_GET_PHOTOS;
+        redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_MESSAGE, MessagesConstants.INFO_DELETE_SUCCESS);
+        return UrlsConstants.REDIRECT_GET_PHOTOS;
+    }
+
+    private void createErrorMessages(@NonNull BindingResult bindingResult) throws PhotosBusinessException {
+
+        if (!bindingResult.hasErrors()) {
+            return;
+        }
+
+        List<String> messages = new ArrayList<>();
+
+        for(FieldError fieldError: bindingResult.getFieldErrors()) {
+            messages.add(fieldError.getDefaultMessage());
+        }
+
+        Collections.sort(messages);
+        throw new PhotosBusinessException(String.join(KeyWordsConstants.SYMBOL_LINE_FEED, messages));
     }
 }

@@ -5,11 +5,12 @@ import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.exif.ExifSubIFDDirectory;
 import com.drew.metadata.exif.GpsDirectory;
-import jp.yoshida.photoadmin.common.constant.MessageConstants;
-import jp.yoshida.photoadmin.common.constant.StandardConstants;
+import jp.yoshida.photoadmin.common.constant.KeyWordsConstants;
+import jp.yoshida.photoadmin.common.constant.MessagesConstants;
+import jp.yoshida.photoadmin.common.constant.StandardsConstants;
 import jp.yoshida.photoadmin.common.exception.PhotosBusinessException;
 import jp.yoshida.photoadmin.common.exception.PhotosSystemException;
-import jp.yoshida.photoadmin.dto.PhotoDto;
+import jp.yoshida.photoadmin.dao.entity.Photo;
 import lombok.NonNull;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,17 +31,16 @@ public class PhotosUtil {
 
     @NonNull
     public static byte[] createThumbnail(
-            @NonNull MultipartFile sendingPhoto,
-            @NonNull String formatName) throws PhotosBusinessException, PhotosSystemException {
+            @NonNull MultipartFile sendingPhoto) throws PhotosBusinessException, PhotosSystemException {
 
         Path tempPath;
 
         try {
-            tempPath = Files.createTempFile(Paths.get(StandardConstants.JAVA_IO_TMPDIR),
-                    StandardConstants.TMPDIR_PREFIX, StandardConstants.TMPDIR_SUFFIX);
+            tempPath = Files.createTempFile(Paths.get(StandardsConstants.JAVA_IO_TMPDIR),
+                    StandardsConstants.TMPDIR_PREFIX, StandardsConstants.TMPDIR_SUFFIX);
             sendingPhoto.transferTo(tempPath);
         } catch (IOException e) {
-            throw new PhotosSystemException(MessageConstants.ERROR_TEMP_FILE_PROCESSING_FAILED);
+            throw new PhotosSystemException(MessagesConstants.ERROR_TEMP_FILE_PROCESSING_FAILED);
         }
 
         try {
@@ -57,27 +57,27 @@ public class PhotosUtil {
             BufferedImage thumbnail = new BufferedImage(thumbnailWidth, thumbnailHeight, BufferedImage.TYPE_INT_RGB);
             thumbnail.createGraphics().drawImage(ImageIO.read(tempFile).getScaledInstance(
                     thumbnailWidth, thumbnailHeight, Image.SCALE_SMOOTH), 0, 0, null);
-            Files.delete(tempPath);
+            Files.deleteIfExists(tempPath);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(thumbnail, formatName, baos);
+            ImageIO.write(thumbnail, KeyWordsConstants.IMAGE_FORMAT_NAME_JPG, baos);
 
             return baos.toByteArray();
         } catch (Exception e) {
-            throw new PhotosBusinessException(MessageConstants.ERROR_FILE_PROCESSING_FAILED);
+            throw new PhotosBusinessException(MessagesConstants.ERROR_FILE_PROCESSING_FAILED);
         }
     }
 
     public static void setMetaDatum(
-            @NonNull PhotoDto photoDto,
+            @NonNull Photo photo,
             @NonNull MultipartFile sendingPhoto) throws PhotosBusinessException, PhotosSystemException {
 
         Path tempPath;
         try {
-            tempPath = Files.createTempFile(Paths.get(StandardConstants.JAVA_IO_TMPDIR),
-                    StandardConstants.TMPDIR_PREFIX, StandardConstants.TMPDIR_SUFFIX);
+            tempPath = Files.createTempFile(Paths.get(StandardsConstants.JAVA_IO_TMPDIR),
+                    StandardsConstants.TMPDIR_PREFIX, StandardsConstants.TMPDIR_SUFFIX);
             sendingPhoto.transferTo(tempPath);
         } catch (IOException e) {
-            throw new PhotosSystemException(MessageConstants.ERROR_TEMP_FILE_PROCESSING_FAILED);
+            throw new PhotosSystemException(MessagesConstants.ERROR_TEMP_FILE_PROCESSING_FAILED);
         }
 
         Metadata metadata;
@@ -85,26 +85,26 @@ public class PhotosUtil {
         try {
             File tempFile = new File(String.valueOf(tempPath));
             metadata = ImageMetadataReader.readMetadata(tempFile);
-            Files.delete(tempPath);
+            Files.deleteIfExists(tempPath);
         } catch (Exception e) {
-            throw new PhotosBusinessException(MessageConstants.ERROR_FILE_PROCESSING_FAILED);
+            throw new PhotosBusinessException(MessagesConstants.ERROR_FILE_PROCESSING_FAILED);
         }
 
         Directory ifdDirectory = metadata.getFirstDirectoryOfType(ExifSubIFDDirectory.class);
 
         if (Objects.nonNull(ifdDirectory)) {
-            photoDto.setWidth(ifdDirectory.getDescription(ExifSubIFDDirectory.TAG_EXIF_IMAGE_WIDTH));
-            photoDto.setHeight(ifdDirectory.getDescription(ExifSubIFDDirectory.TAG_EXIF_IMAGE_HEIGHT));
-            photoDto.setShootingDateTime(ifdDirectory.getDate(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL));
+            photo.setWidth(ifdDirectory.getDescription(ExifSubIFDDirectory.TAG_EXIF_IMAGE_WIDTH));
+            photo.setHeight(ifdDirectory.getDescription(ExifSubIFDDirectory.TAG_EXIF_IMAGE_HEIGHT));
+            photo.setShootingDateTime(ifdDirectory.getDate(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL));
         }
 
         Directory gpsDirectory = metadata.getFirstDirectoryOfType(GpsDirectory.class);
 
         if (Objects.nonNull(gpsDirectory)) {
-            photoDto.setLatitude(gpsDirectory.getDescription(ExifGPSTagSet.TAG_GPS_LATITUDE));
-            photoDto.setLatitudeRef(gpsDirectory.getDescription(ExifGPSTagSet.TAG_GPS_LATITUDE_REF));
-            photoDto.setLongitude(gpsDirectory.getDescription(ExifGPSTagSet.TAG_GPS_LONGITUDE));
-            photoDto.setLongitudeRef(gpsDirectory.getDescription(ExifGPSTagSet.TAG_GPS_LONGITUDE_REF));
+            photo.setLatitude(gpsDirectory.getDescription(ExifGPSTagSet.TAG_GPS_LATITUDE));
+            photo.setLatitudeRef(gpsDirectory.getDescription(ExifGPSTagSet.TAG_GPS_LATITUDE_REF));
+            photo.setLongitude(gpsDirectory.getDescription(ExifGPSTagSet.TAG_GPS_LONGITUDE));
+            photo.setLongitudeRef(gpsDirectory.getDescription(ExifGPSTagSet.TAG_GPS_LONGITUDE_REF));
         }
     }
 }
