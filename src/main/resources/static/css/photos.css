@@ -2,20 +2,34 @@
             border-collapse: collapse;
         }
 
-        .p-a-summary-table tr {
-            cursor: pointer;
-        }
-
         .p-a-summary-table td {
-            border: 1px solid #000;
+            border: 1px solid #000000;
         }
 
         .p-a-summary-table td.p-a-bottom, .p-a-bottom {
-            border-bottom: 3px solid #000;
+            border-bottom: 3px solid #000000;
         }
 
         .p-a-summary-table img {
             width: 180px;
             height: 100px;
             object-fit: cover;
+            cursor: pointer;
+        }
+
+        .p-a-info {
+            padding: 5px;
+        }
+
+        .p-a-info-level-info {
+            background-color: #00ff00;
+        }
+
+        .p-a-info-level-warn {
+            background-color: #ffff00;
+        }
+
+        .p-a-info-level-error {
+            background-color: #ff3300;
+            color: #ffffff;
         }

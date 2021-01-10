@@ -4,6 +4,8 @@ public class KeyWordsConstants {
 
     public static final String KEY_MESSAGE = "message";
 
+    public static final String KEY_INFO_LEVEL = "infoLevel";
+
     public static final String MIME_TYPE_ANY_IMAGE = "image/.*";
 
     public static final String IMAGE_FORMAT_NAME_JPG = "jpg";
