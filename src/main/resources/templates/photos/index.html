@@ -7,18 +7,22 @@
     </head>
     <body th:onload="PhotosJs.initialize()">
         <h1>写真管理システム　写真一覧画面</h1>
+        <noscript th:if="${message}">
+            <p th:text="${message}" class="p-a-info" th:classappend="|p-a-info-level-${infoLevel ?: 'any'}|"></p>
+        </noscript>
         <p th:if="${photosForm.photoForms.size() == 0}">まだ写真が登録されていません</p>
         <div th:if="${photosForm.photoForms.size() gt 0}">
             <p>画像をクリックすると大きな写真が見られます</p>
             <hr>
-            <form name="summaryForm" action="#" th:action="@{/delete-photos}" th:object="${deleteForm}" method="post">
+            <form name="summary-form" action="#" th:action="@{/delete-photos}" th:object="${deleteForm}" method="post">
                 <table class="p-a-summary-table">
                     <th:block th:each="photo : ${photosForm.photoForms}">
                         <th:block th:each="seq : ${#numbers.sequence(1, 2)}">
                             <tr th:if="${seq} == 1">
-                                <td rowspan="2" class="p-a-bottom"
-                                        th:onclick="'PhotosJs.jumpToPhoto(' + ${photo.id} + ')'">
-                                    <img th:src="'data:image/jpg;base64,' + ${photo.thumbnail}">
+                                <td rowspan="2" class="p-a-bottom">
+                                    <a th:href="@{/photo/{id} (id = ${photo.id})}">
+                                        <img th:src="|data:image/jpg;base64,${photo.thumbnail}|">
+                                    </a>
                                 </td>
                                 <td>
                                     <p>ファイル名</p>
@@ -62,7 +66,7 @@
                                     <p th:text="${photo.longitude}"></p>
                                 </td>
                                 <td>
-                                    <input type="checkbox" th:id="'deleteId' + ${photo.id}"
+                                    <input type="checkbox" th:id="|delete-id-${photo.id}|"
                                             th:field="*{deleteIds}" th:value="${photo.id}">
                                 </td>
                             </tr>
@@ -76,7 +80,7 @@
             </form>
         </div>
         <hr>
-        <form name="sendingPhotoForm" action="#" th:action="@{/add-photo}"
+        <form name="sending-photo-form" action="#" th:action="@{/add-photo}"
                 th:object="${photoForm}" method="post" enctype="multipart/form-data">
             <p>
                 アップロードする写真を選択：

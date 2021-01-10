@@ -14,7 +14,7 @@
             <a th:if="*{nextId} != null" th:href="@{/photo/{id} (id = *{nextId})}">次の写真</a>
             <span th:unless="*{nextId} != null">次の写真</span>
             &nbsp;&nbsp;
-            <a th:href="'data:image/' + *{mimeType} + ';base64,' + *{rawPhoto}" th:download="*{fileName}">
+            <a th:href="|data:*{mimeType};base64,*{rawPhoto}|" th:download="*{fileName}">
                 この写真をダウンロード
             </a>
             &nbsp;&nbsp;
@@ -51,7 +51,7 @@
             </table>
             <hr>
             <p>
-                <img th:src="'data:' + *{mimeType} + ';base64,' + *{rawPhoto}">
+                <img th:src="|data:*{mimeType};base64,*{rawPhoto}|">
             </p>
         </form>
         <hr>
@@ -62,7 +62,7 @@
             <a th:if="*{nextId} != null" th:href="@{/photo/{id} (id = *{nextId})}">次の写真</a>
             <span th:unless="*{nextId} != null">次の写真</span>
             &nbsp;&nbsp;
-            <a th:href="'data:image/' + *{mimeType} + ';base64,' + *{rawPhoto}" th:download="*{fileName}">
+            <a th:href="|data:*{mimeType};base64,*{rawPhoto}|" th:download="*{fileName}">
                 この写真をダウンロード
             </a>
             &nbsp;&nbsp;

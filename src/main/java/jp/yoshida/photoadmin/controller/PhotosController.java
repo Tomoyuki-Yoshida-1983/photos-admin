@@ -24,9 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -77,6 +75,7 @@ public class PhotosController {
             photoDto = photosService.getPhoto(id);
         } catch (PhotosBusinessException e) {
             redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_MESSAGE, e.getMessage());
+            redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_INFO_LEVEL, e.getInfoLevel());
             return UrlsConstants.REDIRECT_GET_PHOTOS;
         }
 
@@ -97,10 +96,12 @@ public class PhotosController {
             photosService.addPhoto(sendingPhoto);
         } catch (PhotosBusinessException e) {
             redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_MESSAGE, e.getMessage());
+            redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_INFO_LEVEL, e.getInfoLevel());
             return UrlsConstants.REDIRECT_GET_PHOTOS;
         }
 
         redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_MESSAGE, MessagesConstants.INFO_ADD_SUCCESS);
+        redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_INFO_LEVEL, MessagesConstants.INFO_LEVEL_INFO);
         return UrlsConstants.REDIRECT_GET_PHOTOS;
     }
 
@@ -115,11 +116,13 @@ public class PhotosController {
             createErrorMessages(bindingResult);
         } catch (PhotosBusinessException e) {
             redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_MESSAGE, e.getMessage());
+            redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_INFO_LEVEL, e.getInfoLevel());
             return UrlsConstants.REDIRECT_GET_PHOTOS;
         }
 
         photosService.deletePhotos(deleteForm.getDeleteIds());
         redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_MESSAGE, MessagesConstants.INFO_DELETE_SUCCESS);
+        redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_INFO_LEVEL, MessagesConstants.INFO_LEVEL_INFO);
         return UrlsConstants.REDIRECT_GET_PHOTOS;
     }
 
@@ -129,6 +132,7 @@ public class PhotosController {
 
         photosService.deletePhotos(new int[] {id});
         redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_MESSAGE, MessagesConstants.INFO_DELETE_SUCCESS);
+        redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_INFO_LEVEL, MessagesConstants.INFO_LEVEL_INFO);
         return UrlsConstants.REDIRECT_GET_PHOTOS;
     }
 
@@ -141,10 +145,24 @@ public class PhotosController {
         List<String> messages = new ArrayList<>();
 
         for(FieldError fieldError: bindingResult.getFieldErrors()) {
-            messages.add(fieldError.getDefaultMessage());
+            String message = null;
+
+            if (Objects.nonNull(fieldError.getCodes())) {
+                List<String> codes = Arrays.asList(fieldError.getCodes());
+
+                if (codes.contains("typeMismatch.deleteIds")) {
+                    message = "typeMismatch.deleteIds";
+                } else {
+                    message = fieldError.getDefaultMessage();
+                }
+            }
+
+            messages.add(message);
         }
 
         Collections.sort(messages);
-        throw new PhotosBusinessException(String.join(KeyWordsConstants.SYMBOL_LINE_FEED, messages));
+        throw new PhotosBusinessException(
+                String.join(KeyWordsConstants.SYMBOL_LINE_FEED, messages),
+                MessagesConstants.INFO_LEVEL_ERROR);
     }
 }

@@ -59,7 +59,9 @@ public class PhotosServiceImpl implements PhotosService {
         int currentIdx = ids.indexOf(id);
 
         if (currentIdx == -1 || Objects.isNull(photo)) {
-            throw new PhotosBusinessException(MessagesConstants.WARN_PHOTO_NOT_FOUND);
+            throw new PhotosBusinessException(
+                    MessagesConstants.WARN_PHOTO_NOT_FOUND,
+                    MessagesConstants.INFO_LEVEL_WARN);
         }
 
         PhotoDto photoDto = new PhotoDto();
@@ -94,7 +96,9 @@ public class PhotosServiceImpl implements PhotosService {
         try {
             photo.setRawPhoto(sendingPhoto.getBytes());
         } catch (Exception e) {
-            throw new PhotosBusinessException(MessagesConstants.ERROR_FILE_PROCESSING_FAILED);
+            throw new PhotosBusinessException(
+                    MessagesConstants.ERROR_FILE_PROCESSING_FAILED,
+                    MessagesConstants.INFO_LEVEL_ERROR);
         }
 
         photo.setThumbnail(PhotosUtil.createThumbnail(sendingPhoto));
@@ -102,7 +106,9 @@ public class PhotosServiceImpl implements PhotosService {
         Set<ConstraintViolation<Photo>> violations = validator.validate(photo);
 
         if (violations.size() > 0) {
-            throw new PhotosBusinessException(MessagesConstants.ERROR_FILE_PROCESSING_FAILED);
+            throw new PhotosBusinessException(
+                    MessagesConstants.ERROR_FILE_PROCESSING_FAILED,
+                    MessagesConstants.INFO_LEVEL_ERROR);
         }
 
         photosDao.addPhoto(photo);

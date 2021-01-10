@@ -2,6 +2,12 @@ package jp.yoshida.photoadmin.common.constant;
 
 public class MessagesConstants {
 
+    public static final String INFO_LEVEL_INFO = "info";
+
+    public static final String INFO_LEVEL_WARN = "warn";
+
+    public static final String INFO_LEVEL_ERROR = "error";
+
     public static final String INFO_ADD_SUCCESS = "写真を登録しました。";
 
     public static final String INFO_DELETE_SUCCESS = "写真を削除しました。";

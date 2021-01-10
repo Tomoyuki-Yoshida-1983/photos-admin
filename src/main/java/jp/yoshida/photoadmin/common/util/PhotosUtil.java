@@ -63,7 +63,9 @@ public class PhotosUtil {
 
             return baos.toByteArray();
         } catch (Exception e) {
-            throw new PhotosBusinessException(MessagesConstants.ERROR_FILE_PROCESSING_FAILED);
+            throw new PhotosBusinessException(
+                    MessagesConstants.ERROR_FILE_PROCESSING_FAILED,
+                    MessagesConstants.INFO_LEVEL_ERROR);
         }
     }
 
@@ -87,7 +89,9 @@ public class PhotosUtil {
             metadata = ImageMetadataReader.readMetadata(tempFile);
             Files.deleteIfExists(tempPath);
         } catch (Exception e) {
-            throw new PhotosBusinessException(MessagesConstants.ERROR_FILE_PROCESSING_FAILED);
+            throw new PhotosBusinessException(
+                    MessagesConstants.ERROR_FILE_PROCESSING_FAILED,
+                    MessagesConstants.INFO_LEVEL_ERROR);
         }
 
         Directory ifdDirectory = metadata.getFirstDirectoryOfType(ExifSubIFDDirectory.class);
