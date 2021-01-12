@@ -1,5 +1,7 @@
 package jp.yoshida.photoadmin.controller.form.validation;
 
+import jp.yoshida.photoadmin.common.constant.MessagesConstants;
+
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
@@ -15,7 +17,7 @@ public @interface ImageFile {
 
     Class<? extends Payload>[] payload() default {};
 
-    String message() default "{jp.yoshida.photoadmin.controller.form.validation.ImageFile.message}";
+    String message() default MessagesConstants.ERROR_FILE_IS_NOT_IMAGE;
 
     @Documented
     @Target(ElementType.FIELD)

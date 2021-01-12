@@ -1,10 +1,9 @@
 package jp.yoshida.photoadmin.controller.form;
 
 import jp.yoshida.photoadmin.common.constant.KeyWordsConstants;
-import jp.yoshida.photoadmin.common.constant.MessagesConstants;
 import jp.yoshida.photoadmin.controller.form.validation.ImageFile;
 import jp.yoshida.photoadmin.controller.form.validation.MaxFileNameLength;
-import jp.yoshida.photoadmin.controller.form.validation.MaxFileSizeGb;
+import jp.yoshida.photoadmin.controller.form.validation.MaxFileSize;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,9 +36,11 @@ public class PhotoForm {
 
     private String longitude;
 
-    @NotNull(message = MessagesConstants.ERROR_NO_FILE)
+    @NotNull
     @ImageFile
     @MaxFileNameLength(KeyWordsConstants.MAX_FILE_NAME_LENGTH)
-    @MaxFileSizeGb(KeyWordsConstants.MAX_FILE_SIZE_GB)
+    @MaxFileSize(
+            value = KeyWordsConstants.MAX_FILE_SIZE_COEFFICIENT,
+            unit = KeyWordsConstants.UNIT_FILE_SIZE.MEGA_BYTE)
     private MultipartFile sendingPhoto;
 }

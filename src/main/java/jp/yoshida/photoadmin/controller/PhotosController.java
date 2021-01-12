@@ -13,9 +13,9 @@ import jp.yoshida.photoadmin.service.dto.PhotoDto;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,14 +23,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 public class PhotosController {
 
     private final PhotosService photosService;
+
+    private final MessageSource messageSource;
 
     @ModelAttribute
     PhotosForm initPhotosForm() {
@@ -88,19 +92,28 @@ public class PhotosController {
     public String addPhoto(
             @NonNull RedirectAttributes redirectAttributes,
             @Valid @NonNull PhotoForm photoForm,
-            @NonNull BindingResult bindingResult) throws PhotosSystemException {
+            @NonNull BindingResult bindingResult,
+            @NonNull HttpServletRequest httpServletRequest) throws PhotosSystemException {
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute(KeyWordsConstants.NAME_BINDING_RESULT_PHOTO_FORM, bindingResult);
+            redirectAttributes.addFlashAttribute(KeyWordsConstants.NAME_PHOTO_FORM, photoForm);
+            return UrlsConstants.REDIRECT_GET_PHOTOS;
+        }
+
+        MultipartFile sendingPhoto = photoForm.getSendingPhoto();
 
         try {
-            createErrorMessages(bindingResult);
-            MultipartFile sendingPhoto = photoForm.getSendingPhoto();
             photosService.addPhoto(sendingPhoto);
         } catch (PhotosBusinessException e) {
-            redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_MESSAGE, e.getMessage());
+            redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_MESSAGE, messageSource.getMessage(
+                    e.getMessage(),null, httpServletRequest.getLocale()));
             redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_INFO_LEVEL, e.getInfoLevel());
             return UrlsConstants.REDIRECT_GET_PHOTOS;
         }
 
-        redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_MESSAGE, MessagesConstants.INFO_ADD_SUCCESS);
+        redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_MESSAGE, messageSource.getMessage(
+                MessagesConstants.INFO_ADD_SUCCESS,null, httpServletRequest.getLocale()));
         redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_INFO_LEVEL, MessagesConstants.INFO_LEVEL_INFO);
         return UrlsConstants.REDIRECT_GET_PHOTOS;
     }
@@ -110,59 +123,33 @@ public class PhotosController {
     public String deletePhotos(
             @NonNull RedirectAttributes redirectAttributes,
             @Valid @NonNull DeleteForm deleteForm,
-            @NonNull BindingResult bindingResult) {
+            @NonNull BindingResult bindingResult,
+            @NonNull HttpServletRequest httpServletRequest) {
 
-        try {
-            createErrorMessages(bindingResult);
-        } catch (PhotosBusinessException e) {
-            redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_MESSAGE, e.getMessage());
-            redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_INFO_LEVEL, e.getInfoLevel());
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute(KeyWordsConstants.NAME_BINDING_RESULT_DELETE_FORM, bindingResult);
+            redirectAttributes.addFlashAttribute(KeyWordsConstants.NAME_DELETE_FORM, deleteForm);
             return UrlsConstants.REDIRECT_GET_PHOTOS;
         }
 
         photosService.deletePhotos(deleteForm.getDeleteIds());
-        redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_MESSAGE, MessagesConstants.INFO_DELETE_SUCCESS);
+        redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_MESSAGE, messageSource.getMessage(
+                MessagesConstants.INFO_DELETE_SUCCESS,null, httpServletRequest.getLocale()));
         redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_INFO_LEVEL, MessagesConstants.INFO_LEVEL_INFO);
         return UrlsConstants.REDIRECT_GET_PHOTOS;
     }
 
     @PostMapping(UrlsConstants.REQUEST_DELETE_PHOTO)
     @NonNull
-    public String deletePhoto(@NonNull RedirectAttributes redirectAttributes, @PathVariable("id") @NonNull int id) {
+    public String deletePhoto(
+            @NonNull RedirectAttributes redirectAttributes,
+            @PathVariable("id") @NonNull int id,
+            @NonNull HttpServletRequest httpServletRequest) {
 
         photosService.deletePhotos(new int[] {id});
-        redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_MESSAGE, MessagesConstants.INFO_DELETE_SUCCESS);
+        redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_MESSAGE, messageSource.getMessage(
+                MessagesConstants.INFO_DELETE_SUCCESS,null, httpServletRequest.getLocale()));
         redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_INFO_LEVEL, MessagesConstants.INFO_LEVEL_INFO);
         return UrlsConstants.REDIRECT_GET_PHOTOS;
-    }
-
-    private void createErrorMessages(@NonNull BindingResult bindingResult) throws PhotosBusinessException {
-
-        if (!bindingResult.hasErrors()) {
-            return;
-        }
-
-        List<String> messages = new ArrayList<>();
-
-        for(FieldError fieldError: bindingResult.getFieldErrors()) {
-            String message = null;
-
-            if (Objects.nonNull(fieldError.getCodes())) {
-                List<String> codes = Arrays.asList(fieldError.getCodes());
-
-                if (codes.contains("typeMismatch.deleteIds")) {
-                    message = "typeMismatch.deleteIds";
-                } else {
-                    message = fieldError.getDefaultMessage();
-                }
-            }
-
-            messages.add(message);
-        }
-
-        Collections.sort(messages);
-        throw new PhotosBusinessException(
-                String.join(KeyWordsConstants.SYMBOL_LINE_FEED, messages),
-                MessagesConstants.INFO_LEVEL_ERROR);
     }
 }

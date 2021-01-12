@@ -12,6 +12,7 @@ import jp.yoshida.photoadmin.common.exception.PhotosBusinessException;
 import jp.yoshida.photoadmin.common.exception.PhotosSystemException;
 import jp.yoshida.photoadmin.dao.entity.Photo;
 import lombok.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
@@ -110,5 +111,24 @@ public class PhotosUtil {
             photo.setLongitude(gpsDirectory.getDescription(ExifGPSTagSet.TAG_GPS_LONGITUDE));
             photo.setLongitudeRef(gpsDirectory.getDescription(ExifGPSTagSet.TAG_GPS_LONGITUDE_REF));
         }
+    }
+
+    @Nullable
+    public static String concatIgnoreNull(
+            @Nullable String origin,
+            @Nullable String appendix,
+            @Nullable String delimiter) {
+
+        if (Objects.isNull(origin) && Objects.isNull(appendix)) {
+            return null;
+        }
+
+        if (Objects.isNull(origin) || Objects.isNull(appendix) || Objects.isNull(delimiter)) {
+            delimiter = KeyWordsConstants.SYMBOL_BLANK;
+        }
+
+        return Objects.toString(origin, KeyWordsConstants.SYMBOL_BLANK)
+                + delimiter
+                + Objects.toString(appendix, KeyWordsConstants.SYMBOL_BLANK);
     }
 }

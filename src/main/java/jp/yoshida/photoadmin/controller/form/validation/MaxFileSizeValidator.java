@@ -7,14 +7,17 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.Objects;
 
-public class MaxFileSizeGbValidator implements ConstraintValidator<MaxFileSizeGb, MultipartFile> {
+public class MaxFileSizeValidator implements ConstraintValidator<MaxFileSize, MultipartFile> {
 
-    private long maxFileSize;
+    private int value;
+
+    private KeyWordsConstants.UNIT_FILE_SIZE unit;
 
     @Override
-    public void initialize(MaxFileSizeGb maxFileSizeGb) {
+    public void initialize(MaxFileSize maxFileSize) {
 
-        this.maxFileSize = maxFileSizeGb.value() * KeyWordsConstants.MAGNIFICATION_GIGA_BYTE;
+        this.value = maxFileSize.value();
+        this.unit = maxFileSize.unit();
     }
 
     @Override
@@ -24,6 +27,6 @@ public class MaxFileSizeGbValidator implements ConstraintValidator<MaxFileSizeGb
             return true;
         }
 
-        return multipartFile.getSize() <= this.maxFileSize;
+        return multipartFile.getSize() <= this.value * this.unit.getMagnification();
     }
 }
