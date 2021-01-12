@@ -18,18 +18,23 @@
         }
 
         .p-a-info {
+            border-style: solid;
+            border-width: 5px;
             padding: 5px;
         }
 
         .p-a-info-level-info {
-            background-color: #00ff00;
+            color: #009900;
+            border-color: #009900;
+
         }
 
         .p-a-info-level-warn {
-            background-color: #ffff00;
+            color: #999900;
+            border-color: #999900;
         }
 
         .p-a-info-level-error {
-            background-color: #ff3300;
-            color: #ffffff;
+            color: #ff0000;
+            border-color: #ff0000;
         }

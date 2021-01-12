@@ -77,6 +77,10 @@
                     削除チェックボックスをオンにした写真を一括で削除：
                     <input type="submit" value="削除を実行" onclick="return PhotosJs.preDeleteCheck()">
                 </p>
+                <ul>
+                    <li th:each="err : ${#fields.errors('deleteIds')}" th:text="${err}"
+                            th:class="p-a-info-level-error"></li>
+                </ul>
             </form>
         </div>
         <hr>
@@ -87,6 +91,10 @@
                 <input type="file" th:field="*{sendingPhoto}" accept="image/*" required>
                 <input type="submit" value="アップロードを実行" onclick="return PhotosJs.preSendCheck()">
             </p>
+            <ul>
+                <li th:each="err : ${#fields.errors('sendingPhoto')}" th:text="${err}"
+                        th:class="p-a-info-level-error"></li>
+            </ul>
         </form>
         <hr>
         <input type="hidden" id="message" th:value="${message}">

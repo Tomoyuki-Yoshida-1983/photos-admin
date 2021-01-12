@@ -1,5 +1,7 @@
 package jp.yoshida.photoadmin.controller.form.validation;
 
+import jp.yoshida.photoadmin.common.constant.MessagesConstants;
+
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
@@ -15,7 +17,7 @@ public @interface MaxFileNameLength {
 
     Class<? extends Payload>[] payload() default {};
 
-    String message() default "{jp.yoshida.photoadmin.controller.form.validation.MaxFileNameLength.message}";
+    String message() default MessagesConstants.ERROR_FILE_NAME_LENGTH_EXCEEDED;
 
     int value() default 255;
 
