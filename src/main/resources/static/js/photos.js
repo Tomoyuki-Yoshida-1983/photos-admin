@@ -2,14 +2,13 @@ var PhotosJs = {
 
     DOM_ID_MESSAGE: "message",
     DOM_NAME_DELETE_IDS: "deleteIds",
+    DOM_NAME_SENDING_PHOTO: "sendingPhoto",
     MAX_FILE_NAME_LENGTH: 50,
     MAX_FILE_SIZE: 1 * 1024 * 1024,
-    CONFIRM_DELETE: "選択された写真を削除してよろしいですか？",
-    ERROR_NOT_CHECKED: "削除する写真のチェックボックスをチェックしてください。",
-
-    ERROR_FILE_NAME_IS_EMPTY: "ファイル名を入力してください。",
-    ERROR_FILE_NAME_LENGTH_EXCEED: "ファイル名は50文字以下にしてください。",
-    ERROR_FILE_SIZE_EXCEED: "ファイルサイズは1MB以内にしてください。",
+    JS_NOT_EMPTY_DELETE_IDS: document.getElementById("JS_NOT_EMPTY_DELETE_IDS").value,
+    JS_MAX_FILE_NAME_LENGTH_SENDING_PHOTO: document.getElementById("JS_MAX_FILE_NAME_LENGTH_SENDING_PHOTO").value,
+    JS_MAX_FILE_SIZE_SENDING_PHOTO: document.getElementById("JS_MAX_FILE_SIZE_SENDING_PHOTO").value,
+    JS_CONFIRM_DELETE_SELECTED_PHOTOS: document.getElementById("JS_CONFIRM_DELETE_SELECTED_PHOTOS").value,
 
     initialize: function() {
 
@@ -26,11 +25,11 @@ var PhotosJs = {
         deleteIds.forEach(id => isChecked = id.checked || isChecked);
 
         if (!isChecked) {
-            alert(this.ERROR_NOT_CHECKED);
+            alert(this.JS_NOT_EMPTY_DELETE_IDS);
             return false;
         }
 
-        if (confirm(this.CONFIRM_DELETE)) {
+        if (confirm(this.JS_CONFIRM_DELETE_SELECTED_PHOTOS)) {
             return true;
         }
 
@@ -39,24 +38,19 @@ var PhotosJs = {
 
     preSendCheck: function() {
 
-        var photo = document.sendingPhotoForm.sendingPhoto.files;
+        var photos = document.getElementById(this.DOM_NAME_SENDING_PHOTO).files;
 
-        if (photo.length == 0) {
+        if (photos.length == 0) {
             return true;
         }
 
-        if(!photo[0].name) {
-            alert(this.ERROR_FILE_NAME_IS_EMPTY);
+        if(photos[0].name.length > this.MAX_FILE_NAME_LENGTH) {
+            alert(this.JS_MAX_FILE_NAME_LENGTH_SENDING_PHOTO);
             return false;
         }
 
-        if(photo[0].name.length > this.MAX_FILE_NAME_LENGTH) {
-            alert(this.ERROR_FILE_NAME_LENGTH_EXCEED);
-            return false;
-        }
-
-        if(photo[0].size > this.MAX_FILE_SIZE) {
-            alert(this.ERROR_FILE_SIZE_EXCEED);
+        if(photos[0].size > this.MAX_FILE_SIZE) {
+            alert(this.JS_MAX_FILE_SIZE_SENDING_PHOTO);
             return false;
         }
 

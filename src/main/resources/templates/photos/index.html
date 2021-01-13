@@ -1,20 +1,21 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" lang="jp">
+<html xmlns:th="http://www.thymeleaf.org" th:lang="#{HTML_LANG}">
     <head>
-        <title>写真管理システム</title>
+        <title th:text="#{TEXT_SYSTEM_NAME}"></title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link th:href="@{/css/photos.css}" rel="stylesheet" type="text/css">
     </head>
     <body th:onload="PhotosJs.initialize()">
-        <h1>写真管理システム　写真一覧画面</h1>
+        <h1 th:text="#{TEXT_SYSTEM_NAME}"></h1>
+        <h2 th:text="#{TEXT_PAGE_NAME_PHOTOS}"></h2>
         <noscript th:if="${message}">
             <p th:text="${message}" class="p-a-info" th:classappend="|p-a-info-level-${infoLevel ?: 'any'}|"></p>
         </noscript>
-        <p th:if="${photosForm.photoForms.size() == 0}">まだ写真が登録されていません</p>
+        <p th:if="${photosForm.photoForms.size() == 0}" th:text="#{TEXT_NO_PHOTOS_HAVE_BEEN_REGISTERED_YET}"></p>
         <div th:if="${photosForm.photoForms.size() gt 0}">
-            <p>画像をクリックすると大きな写真が見られます</p>
+            <p th:text="#{TEXT_CLICK_ON_THE_PHOTO_TO_SEE_A_LARGER_PHOTO}"></p>
             <hr>
-            <form name="summary-form" action="#" th:action="@{/delete-photos}" th:object="${deleteForm}" method="post">
+            <form name="list-form" action="#" th:action="@{/delete-photos}" th:object="${deleteForm}" method="post">
                 <table class="p-a-summary-table">
                     <th:block th:each="photo : ${photosForm.photoForms}">
                         <th:block th:each="seq : ${#numbers.sequence(1, 2)}">
@@ -24,27 +25,13 @@
                                         <img th:src="|data:image/jpg;base64,${photo.thumbnail}|">
                                     </a>
                                 </td>
-                                <td>
-                                    <p>ファイル名</p>
-                                </td>
-                                <td>
-                                    <p>横幅</p>
-                                </td>
-                                <td>
-                                    <p>高さ</p>
-                                </td>
-                                <td>
-                                    <p>撮影日時</p>
-                                </td>
-                                <td>
-                                    <p>緯度</p>
-                                </td>
-                                <td>
-                                    <p>経度</p>
-                                </td>
-                                <td>
-                                    <p>削除</p>
-                                </td>
+                                <td><p th:text="#{TEXT_FILE_NAME}"></p></td>
+                                <td><p th:text="#{TEXT_WIDTH}"></p></td>
+                                <td><p th:text="#{TEXT_HEIGHT}"></p></td>
+                                <td><p th:text="#{TEXT_SHOOTING_DATE_TIME}"></p></td>
+                                <td><p th:text="#{TEXT_LATITUDE}"></p></td>
+                                <td><p th:text="#{TEXT_LONGITUDE}"></p></td>
+                                <td><p th:text="#{TEXT_DELETE}"></p></td>
                             </tr>
                             <tr th:if="${seq} == 2" class="p-a-bottom">
                                 <td>
@@ -74,10 +61,10 @@
                     </th:block>
                 </table>
                 <p th:if="${photosForm.photoForms.size() gt 0}">
-                    削除チェックボックスをオンにした写真を一括で削除：
-                    <input type="submit" value="削除を実行" onclick="return PhotosJs.preDeleteCheck()">
+                    <span th:text="#{TEXT_DELETE_PHOTOS_WITH_THE_DELETE_CHECK_BOX_SELECTED}"></span>&nbsp;:&nbsp;
+                    <input type="submit" th:value="#{TEXT_DELETE}" onclick="return PhotosJs.preDeleteCheck()">
                 </p>
-                <ul>
+                <ul th:if="${#fields.errors('deleteIds')}">
                     <li th:each="err : ${#fields.errors('deleteIds')}" th:text="${err}"
                             th:class="p-a-info-level-error"></li>
                 </ul>
@@ -87,17 +74,21 @@
         <form name="sending-photo-form" action="#" th:action="@{/add-photo}"
                 th:object="${photoForm}" method="post" enctype="multipart/form-data">
             <p>
-                アップロードする写真を選択：
+                <span th:text="#{TEXT_SELECT_A_PHOTO_TO_UPLOAD}"></span>&nbsp;:&nbsp;
                 <input type="file" th:field="*{sendingPhoto}" accept="image/*" required>
-                <input type="submit" value="アップロードを実行" onclick="return PhotosJs.preSendCheck()">
+                <input type="submit" th:value="#{TEXT_UPLOAD}" onclick="return PhotosJs.preSendCheck()">
             </p>
-            <ul>
+            <ul th:if="${#fields.errors('sendingPhoto')}">
                 <li th:each="err : ${#fields.errors('sendingPhoto')}" th:text="${err}"
                         th:class="p-a-info-level-error"></li>
             </ul>
         </form>
         <hr>
         <input type="hidden" id="message" th:value="${message}">
+        <input type="hidden" id="JS_NOT_EMPTY_DELETE_IDS" th:value="#{JS_NOT_EMPTY_DELETE_IDS}">
+        <input type="hidden" id="JS_MAX_FILE_NAME_LENGTH_SENDING_PHOTO" th:value="#{JS_MAX_FILE_NAME_LENGTH_SENDING_PHOTO}">
+        <input type="hidden" id="JS_MAX_FILE_SIZE_SENDING_PHOTO" th:value="#{JS_MAX_FILE_SIZE_SENDING_PHOTO}">
+        <input type="hidden" id="JS_CONFIRM_DELETE_SELECTED_PHOTOS" th:value="#{JS_CONFIRM_DELETE_SELECTED_PHOTOS}">
         <script th:src="@{/js/photos.js}" type="text/javascript"></script>
     </body>
 </html>

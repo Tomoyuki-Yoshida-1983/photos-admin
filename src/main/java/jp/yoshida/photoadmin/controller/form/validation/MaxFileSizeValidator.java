@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public class MaxFileSizeValidator implements ConstraintValidator<MaxFileSize, MultipartFile> {
 
-    private int value;
+    private long value;
 
     private KeyWordsConstants.UNIT_FILE_SIZE unit;
 

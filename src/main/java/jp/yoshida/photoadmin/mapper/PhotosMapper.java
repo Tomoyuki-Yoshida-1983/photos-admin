@@ -22,5 +22,5 @@ public interface PhotosMapper {
 
     void addPhoto(@NonNull Photo photo);
 
-    void deletePhotos(@Param("ids") @NonNull int[] ids);
+    int deletePhotos(@Param("ids") @NonNull int[] ids);
 }
