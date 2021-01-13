@@ -44,8 +44,8 @@ public class PhotosDaoImpl implements PhotosDao {
     }
 
     @Override
-    public void deletePhotos(@NonNull int[] ids) {
+    public int deletePhotos(@NonNull int[] ids) {
 
-        photosMapper.deletePhotos(ids);
+        return photosMapper.deletePhotos(ids);
     }
 }

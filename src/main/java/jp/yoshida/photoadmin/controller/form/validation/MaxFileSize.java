@@ -20,7 +20,7 @@ public @interface MaxFileSize {
 
     String message() default MessagesConstants.ERROR_FILE_SIZE_EXCEEDED;
 
-    int value() default 0;
+    long value() default 0;
 
     KeyWordsConstants.UNIT_FILE_SIZE unit() default KeyWordsConstants.UNIT_FILE_SIZE.BYTE;
 

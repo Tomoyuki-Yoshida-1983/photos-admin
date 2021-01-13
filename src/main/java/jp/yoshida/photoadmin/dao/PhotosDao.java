@@ -19,5 +19,5 @@ public interface PhotosDao {
 
     void addPhoto(@NonNull Photo photo);
 
-    void deletePhotos(@NonNull int[] ids);
+    int deletePhotos(@NonNull int[] ids);
 }

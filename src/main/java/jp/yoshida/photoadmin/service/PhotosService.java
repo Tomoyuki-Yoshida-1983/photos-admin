@@ -18,5 +18,5 @@ public interface PhotosService {
 
     void addPhoto(@NonNull MultipartFile sendingPhoto) throws PhotosBusinessException, PhotosSystemException;
 
-    void deletePhotos(@NonNull int[] ids);
+    void deletePhotos(@NonNull int[] ids) throws PhotosBusinessException;
 }

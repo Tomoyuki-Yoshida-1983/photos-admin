@@ -32,7 +32,7 @@ public class KeyWordsConstants {
 
     public static final int MAX_FILE_NAME_LENGTH = 50;
 
-    public static final int MAX_FILE_SIZE_COEFFICIENT = 1;
+    public static final long MAX_FILE_SIZE_COEFFICIENT = 1;
 
     public static final int MAX_META_DATA_TEXT_LENGTH = 50;
 

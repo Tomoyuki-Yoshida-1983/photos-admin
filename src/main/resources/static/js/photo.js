@@ -1,10 +1,10 @@
 var PhotoJs = {
 
-    CONFIRM_DELETE: "この写真を削除してよろしいですか？",
+    JS_CONFIRM_DELETE_THIS_PHOTO: document.getElementById("JS_CONFIRM_DELETE_THIS_PHOTO").value,
 
     preDeleteCheck: function() {
 
-        if (confirm(this.CONFIRM_DELETE)) {
+        if (confirm(this.JS_CONFIRM_DELETE_THIS_PHOTO)) {
             return true;
         }
 

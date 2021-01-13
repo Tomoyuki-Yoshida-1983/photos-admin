@@ -17,16 +17,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.Objects;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class PhotosServiceImpl implements PhotosService {
 
     private final PhotosDao photosDao;
+
+    private final Validator validator;
 
     @NonNull
     @Override
@@ -111,13 +112,24 @@ public class PhotosServiceImpl implements PhotosService {
 
         photo.setThumbnail(PhotosUtil.createThumbnail(sendingPhoto));
         PhotosUtil.setMetaDatum(photo, sendingPhoto);
+        Set<ConstraintViolation<Photo>> violations = validator.validate(photo);
+
+        if (violations.size() > 0) {
+            throw new PhotosBusinessException(
+                    MessagesConstants.ERROR_FILE_PROCESSING_FAILED,
+                    MessagesConstants.INFO_LEVEL_ERROR);
+        }
 
         photosDao.addPhoto(photo);
     }
 
     @Override
-    public void deletePhotos(@NonNull int[] ids) {
+    public void deletePhotos(@NonNull int[] ids) throws PhotosBusinessException {
 
-        photosDao.deletePhotos(ids);
+        if (photosDao.deletePhotos(ids) == 0) {
+            throw new PhotosBusinessException(
+                    MessagesConstants.WARN_PHOTO_NOT_FOUND,
+                    MessagesConstants.INFO_LEVEL_WARN);
+        }
     }
 }

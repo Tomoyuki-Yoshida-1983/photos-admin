@@ -72,13 +72,15 @@ public class PhotosController {
     public String getPhoto(
             @NonNull RedirectAttributes redirectAttributes,
             @NonNull PhotoForm photoForm,
-            @PathVariable("id") @NonNull int id) {
+            @PathVariable("id") @NonNull int id,
+            @NonNull HttpServletRequest httpServletRequest) {
 
         PhotoDto photoDto;
         try {
             photoDto = photosService.getPhoto(id);
         } catch (PhotosBusinessException e) {
-            redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_MESSAGE, e.getMessage());
+            redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_MESSAGE, messageSource.getMessage(
+                    e.getMessage(),null, httpServletRequest.getLocale()));
             redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_INFO_LEVEL, e.getInfoLevel());
             return UrlsConstants.REDIRECT_GET_PHOTOS;
         }
@@ -132,7 +134,15 @@ public class PhotosController {
             return UrlsConstants.REDIRECT_GET_PHOTOS;
         }
 
-        photosService.deletePhotos(deleteForm.getDeleteIds());
+        try {
+            photosService.deletePhotos(deleteForm.getDeleteIds());
+        } catch (PhotosBusinessException e) {
+            redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_MESSAGE, messageSource.getMessage(
+                    e.getMessage(),null, httpServletRequest.getLocale()));
+            redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_INFO_LEVEL, e.getInfoLevel());
+            return UrlsConstants.REDIRECT_GET_PHOTOS;
+        }
+
         redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_MESSAGE, messageSource.getMessage(
                 MessagesConstants.INFO_DELETE_SUCCESS,null, httpServletRequest.getLocale()));
         redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_INFO_LEVEL, MessagesConstants.INFO_LEVEL_INFO);
@@ -146,7 +156,15 @@ public class PhotosController {
             @PathVariable("id") @NonNull int id,
             @NonNull HttpServletRequest httpServletRequest) {
 
-        photosService.deletePhotos(new int[] {id});
+        try {
+            photosService.deletePhotos(new int[]{id});
+        } catch (PhotosBusinessException e) {
+            redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_MESSAGE, messageSource.getMessage(
+                    e.getMessage(),null, httpServletRequest.getLocale()));
+            redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_INFO_LEVEL, e.getInfoLevel());
+            return UrlsConstants.REDIRECT_GET_PHOTOS;
+        }
+
         redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_MESSAGE, messageSource.getMessage(
                 MessagesConstants.INFO_DELETE_SUCCESS,null, httpServletRequest.getLocale()));
         redirectAttributes.addFlashAttribute(KeyWordsConstants.KEY_INFO_LEVEL, MessagesConstants.INFO_LEVEL_INFO);
