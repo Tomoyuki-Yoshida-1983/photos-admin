@@ -63,7 +63,11 @@
         </form>
         <p><a th:href="@{/photos}" th:text="#{TEXT_BACK_TO_PHOTOS_LIST}"></a></p>
         <hr>
-        <input type="hidden" id="JS_CONFIRM_DELETE" th:value="#{JS_CONFIRM_DELETE_THIS_PHOTO}">
+        <script th:inline="javascript" type="text/javascript">
+            /*<[!CDATA[*/
+            var JS_CONFIRM_DELETE_THIS_PHOTO = /*[[#{JS_CONFIRM_DELETE_THIS_PHOTO}]]*/ "";
+            /*]]>*/
+        </script>
         <script th:src="@{/js/photo.js}" type="text/javascript"></script>
     </body>
 </html>
