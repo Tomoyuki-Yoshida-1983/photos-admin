@@ -1,12 +1,13 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" lang="jp">
+<html xmlns:th="http://www.thymeleaf.org" th:lang="#{HTML_LANG}">
     <head>
-        <title>写真管理システム</title>
+        <title th:text="#{TEXT_SYSTEM_NAME}"></title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     </head>
     <body>
-        <h1>写真管理システム　エラー画面</h1>
-        <p>入力されたURLに該当するページが見つかりませんでした。</p>
-        <p><a th:href="@{/photos}">写真一覧画面に戻る</a></p>
+        <h1 th:text="#{TEXT_SYSTEM_NAME}"></h1>
+        <h2 th:text="#{TEXT_PAGE_NAME_ERROR}"></h2>
+        <p th:text="#{TEXT_THE_PAGE_WAS_NOT_FOUND}"></p>
+        <p><a th:href="@{/photos}" th:text="#{TEXT_BACK_TO_PHOTOS_LIST}"></a></p>
     </body>
 </html>

@@ -34,24 +34,12 @@
                                 <td><p th:text="#{TEXT_DELETE}"></p></td>
                             </tr>
                             <tr th:if="${seq} == 2" class="p-a-bottom">
-                                <td>
-                                    <p th:text="${photo.fileName}"></p>
-                                </td>
-                                <td>
-                                    <p th:text="${photo.width}"></p>
-                                </td>
-                                <td>
-                                    <p th:text="${photo.height}"></p>
-                                </td>
-                                <td>
-                                    <p th:text="${photo.shootingDateTime}"></p>
-                                </td>
-                                <td>
-                                    <p th:text="${photo.latitude}"></p>
-                                </td>
-                                <td>
-                                    <p th:text="${photo.longitude}"></p>
-                                </td>
+                                <td><p th:text="${photo.fileName}"></p></td>
+                                <td><p th:text="${photo.width}"></p></td>
+                                <td><p th:text="${photo.height}"></p></td>
+                                <td><p th:text="${photo.shootingDateTime}"></p></td>
+                                <td><p th:text="${photo.latitude}"></p></td>
+                                <td><p th:text="${photo.longitude}"></p></td>
                                 <td>
                                     <input type="checkbox" th:id="|delete-id-${photo.id}|"
                                             th:field="*{deleteIds}" th:value="${photo.id}">
@@ -84,11 +72,19 @@
             </ul>
         </form>
         <hr>
-        <input type="hidden" id="message" th:value="${message}">
-        <input type="hidden" id="JS_NOT_EMPTY_DELETE_IDS" th:value="#{JS_NOT_EMPTY_DELETE_IDS}">
-        <input type="hidden" id="JS_MAX_FILE_NAME_LENGTH_SENDING_PHOTO" th:value="#{JS_MAX_FILE_NAME_LENGTH_SENDING_PHOTO}">
-        <input type="hidden" id="JS_MAX_FILE_SIZE_SENDING_PHOTO" th:value="#{JS_MAX_FILE_SIZE_SENDING_PHOTO}">
-        <input type="hidden" id="JS_CONFIRM_DELETE_SELECTED_PHOTOS" th:value="#{JS_CONFIRM_DELETE_SELECTED_PHOTOS}">
+        <script th:inline="javascript" type="text/javascript">
+            /*<[!CDATA[*/
+            var MESSAGE = /*[[${message}]]*/ "";
+            var DOM_NAME_DELETE_IDS = "deleteIds";
+            var DOM_ID_SENDING_PHOTO = "sendingPhoto";
+            var MAX_FILE_NAME_LENGTH = 50;
+            var MAX_FILE_SIZE = 1 * 1024 * 1024;
+            var JS_NOT_EMPTY_DELETE_IDS = /*[[#{JS_NOT_EMPTY_DELETE_IDS}]]*/ "";
+            var JS_MAX_FILE_NAME_LENGTH_SENDING_PHOTO = /*[[#{JS_MAX_FILE_NAME_LENGTH_SENDING_PHOTO}]]*/ "";
+            var JS_MAX_FILE_SIZE_SENDING_PHOTO = /*[[#{JS_MAX_FILE_SIZE_SENDING_PHOTO}]]*/ "";
+            var JS_CONFIRM_DELETE_SELECTED_PHOTOS = /*[[#{JS_CONFIRM_DELETE_SELECTED_PHOTOS}]]*/ "";
+            /*]]>*/
+        </script>
         <script th:src="@{/js/photos.js}" type="text/javascript"></script>
     </body>
 </html>
