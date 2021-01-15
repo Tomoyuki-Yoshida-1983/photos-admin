@@ -33,7 +33,7 @@ public class PhotosServiceImpl implements PhotosService {
     @Override
     public List<PhotoDto> getPhotos() {
 
-        List<PhotoDto> photoEntities = new ArrayList<>();
+        List<PhotoDto> photoDtos = new ArrayList<>();
 
         for (Photo photo : photosDao.getPhotos()) {
             PhotoDto photoDto = new PhotoDto();
@@ -49,10 +49,10 @@ public class PhotosServiceImpl implements PhotosService {
                         StandardsConstants.SIMPLE_DATE_FORMAT.format(photo.getShootingDateTime()));
             }
 
-            photoEntities.add(photoDto);
+            photoDtos.add(photoDto);
         }
 
-        return photoEntities;
+        return photoDtos;
     }
 
     @NonNull
