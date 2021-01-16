@@ -6,8 +6,8 @@ import jp.yoshida.photoadmin.common.constant.StandardsConstants;
 import jp.yoshida.photoadmin.common.exception.PhotosBusinessException;
 import jp.yoshida.photoadmin.common.exception.PhotosSystemException;
 import jp.yoshida.photoadmin.common.util.PhotosUtil;
-import jp.yoshida.photoadmin.dao.PhotosDao;
-import jp.yoshida.photoadmin.dao.entity.Photo;
+import jp.yoshida.photoadmin.repository.PhotosRepository;
+import jp.yoshida.photoadmin.repository.entity.Photo;
 import jp.yoshida.photoadmin.service.PhotosService;
 import jp.yoshida.photoadmin.service.dto.PhotoDto;
 import lombok.NonNull;
@@ -25,7 +25,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class PhotosServiceImpl implements PhotosService {
 
-    private final PhotosDao photosDao;
+    private final PhotosRepository photosRepository;
 
     private final Validator validator;
 
@@ -35,7 +35,7 @@ public class PhotosServiceImpl implements PhotosService {
 
         List<PhotoDto> photoDtos = new ArrayList<>();
 
-        for (Photo photo : photosDao.getPhotos()) {
+        for (Photo photo : photosRepository.getPhotos()) {
             PhotoDto photoDto = new PhotoDto();
             BeanUtils.copyProperties(photo, photoDto);
             photoDto.setThumbnail(Base64.getEncoder().encodeToString(photo.getThumbnail()));
@@ -59,8 +59,8 @@ public class PhotosServiceImpl implements PhotosService {
     @Override
     public PhotoDto getPhoto(@NonNull int id) throws PhotosBusinessException {
 
-        List<Integer> ids = photosDao.getPhotoIds();
-        Photo photo = photosDao.getPhoto(id);
+        List<Integer> ids = photosRepository.getPhotoIds();
+        Photo photo = photosRepository.getPhoto(id);
         int currentIdx = ids.indexOf(id);
 
         if (currentIdx == -1 || Objects.isNull(photo)) {
@@ -120,13 +120,13 @@ public class PhotosServiceImpl implements PhotosService {
                     MessagesConstants.INFO_LEVEL_ERROR);
         }
 
-        photosDao.addPhoto(photo);
+        photosRepository.addPhoto(photo);
     }
 
     @Override
     public void deletePhotos(@NonNull int[] ids) throws PhotosBusinessException {
 
-        if (photosDao.deletePhotos(ids) == 0) {
+        if (photosRepository.deletePhotos(ids) == 0) {
             throw new PhotosBusinessException(
                     MessagesConstants.WARN_PHOTO_NOT_FOUND,
                     MessagesConstants.INFO_LEVEL_WARN);
