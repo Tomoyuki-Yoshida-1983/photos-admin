@@ -10,7 +10,7 @@ import jp.yoshida.photoadmin.common.constant.MessagesConstants;
 import jp.yoshida.photoadmin.common.constant.StandardsConstants;
 import jp.yoshida.photoadmin.common.exception.PhotosBusinessException;
 import jp.yoshida.photoadmin.common.exception.PhotosSystemException;
-import jp.yoshida.photoadmin.dao.entity.Photo;
+import jp.yoshida.photoadmin.repository.entity.Photo;
 import lombok.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.web.multipart.MultipartFile;

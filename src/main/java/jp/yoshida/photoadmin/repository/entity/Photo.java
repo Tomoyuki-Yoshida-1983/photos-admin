@@ -1,4 +1,4 @@
-package jp.yoshida.photoadmin.dao.entity;
+package jp.yoshida.photoadmin.repository.entity;
 
 import jp.yoshida.photoadmin.common.constant.KeyWordsConstants;
 import lombok.Data;

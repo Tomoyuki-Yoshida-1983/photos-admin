@@ -1,6 +1,6 @@
-package jp.yoshida.photoadmin.mapper;
+package jp.yoshida.photoadmin.repository;
 
-import jp.yoshida.photoadmin.dao.entity.Photo;
+import jp.yoshida.photoadmin.repository.entity.Photo;
 import lombok.NonNull;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -9,7 +9,7 @@ import org.springframework.lang.Nullable;
 import java.util.List;
 
 @Mapper
-public interface PhotosMapper {
+public interface PhotosRepository {
 
     @NonNull
     List<Photo> getPhotos();

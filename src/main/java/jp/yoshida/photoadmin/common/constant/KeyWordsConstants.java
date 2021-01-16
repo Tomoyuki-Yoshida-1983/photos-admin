@@ -41,7 +41,6 @@ public class KeyWordsConstants {
         BYTE("B", 1L),
         KILO_BYTE("KB", 1024L),
         MEGA_BYTE("MB", 1024L * 1024L),
-        GIGA_BYTE("GB", 1024L * 1024L * 1024L),
         ;
 
         @Getter
