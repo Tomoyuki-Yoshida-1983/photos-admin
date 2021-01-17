@@ -14,7 +14,7 @@ var PhotosJs = {
         deleteIds.forEach(id => isChecked = id.checked || isChecked);
 
         if (!isChecked) {
-            alert(JS_NOT_EMPTY_DELETE_IDS);
+            alert(ERROR_DELETE_IDS_IS_EMPTY);
             return false;
         }
 
@@ -34,12 +34,12 @@ var PhotosJs = {
         }
 
         if(photos[0].name.length > MAX_FILE_NAME_LENGTH) {
-            alert(JS_MAX_FILE_NAME_LENGTH_SENDING_PHOTO);
+            alert(ERROR_FILE_NAME_LENGTH_EXCEEDED);
             return false;
         }
 
         if(photos[0].size > MAX_FILE_SIZE) {
-            alert(JS_MAX_FILE_SIZE_SENDING_PHOTO);
+            alert(ERROR_FILE_SIZE_EXCEEDED);
             return false;
         }
 
