@@ -82,16 +82,17 @@
             var MAX_FILE_SIZE_MAGNIFICATION = 1024 * 1024;
             var MAX_FILE_SIZE = MAX_FILE_SIZE_COEFFICIENT * MAX_FILE_SIZE_MAGNIFICATION;
             var MAX_FILE_SIZE_UNIT = "MB"
-            var ERROR_DELETE_IDS_IS_EMPTY = (/*[[#{NotEmpty.deleteIds}]]*/ "").replace(/\{0\}/g, /*[[#{deleteIds}]]*/ "");
+            var ERROR_DELETE_IDS_IS_EMPTY = (/*[[#{NotEmpty.deleteIds}]]*/ "").replace(/\{0\}/g, /*[[#{deleteIds}]]*/
+            "");
             var ERROR_FILE_NAME_LENGTH_EXCEEDED
-                    = (/*[[#{jp.yoshida.photosadmin.controller.form.validation.MaxFileNameLength.message}]]*/ "")
-                    .replace(/\{0\}/g, /*[[#{sendingPhoto}]]*/ "")
-                    .replace(/\{value\}/g, String(MAX_FILE_NAME_LENGTH));
+            = (/*[[#{jp.yoshida.photos_admin.controller.form.validation.MaxFileNameLength.message}]]*/ "")
+            .replace(/\{0\}/g, /*[[#{sendingPhoto}]]*/ "")
+            .replace(/\{value\}/g, String(MAX_FILE_NAME_LENGTH));
             var ERROR_FILE_SIZE_EXCEEDED
-                    = (/*[[#{jp.yoshida.photosadmin.controller.form.validation.MaxFileSize.message}]]*/ "")
-                    .replace(/\{0\}/g, /*[[#{sendingPhoto}]]*/ "")
-                    .replace(/\{value\}/g, String(MAX_FILE_SIZE_COEFFICIENT))
-                    .replace(/\{unit\}/g, MAX_FILE_SIZE_UNIT);
+            = (/*[[#{jp.yoshida.photos_admin.controller.form.validation.MaxFileSize.message}]]*/ "")
+            .replace(/\{0\}/g, /*[[#{sendingPhoto}]]*/ "")
+            .replace(/\{value\}/g, String(MAX_FILE_SIZE_COEFFICIENT))
+            .replace(/\{unit\}/g, MAX_FILE_SIZE_UNIT);
             var JS_CONFIRM_DELETE_SELECTED_PHOTOS = /*[[#{JS_CONFIRM_DELETE_SELECTED_PHOTOS}]]*/ "";
             /*]]>*/
         </script>
