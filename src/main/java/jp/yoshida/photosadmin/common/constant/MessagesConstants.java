@@ -5,8 +5,11 @@ public class MessagesConstants {
     public static final String ERROR_FILE_IS_NOT_IMAGE
             = "{jp.yoshida.photosadmin.controller.form.validation.ImageFile.message}";
 
+    public static final String ERROR_FILE_NAME_CONTAINS_FORBIDDEN_CHARACTERS
+            = "{jp.yoshida.photosadmin.controller.form.validation.PossibleFileName.message}";
+
     public static final String ERROR_FILE_NAME_IS_EMPTY
-            = "{jp.yoshida.photosadmin.controller.form.validation.MaxFileNameLength.message.empty}";
+            = "{jp.yoshida.photosadmin.controller.form.validation.MaxFileNameLength.empty.message}";
 
     public static final String ERROR_FILE_NAME_LENGTH_EXCEEDED
             = "{jp.yoshida.photosadmin.controller.form.validation.MaxFileNameLength.message}";
