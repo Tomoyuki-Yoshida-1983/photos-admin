@@ -7,6 +7,9 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.Objects;
 
+/**
+ * MIMEタイプが画像ファイルであることを検証するバリデーター
+ */
 public class ImageFileValidator implements ConstraintValidator<ImageFile, MultipartFile> {
 
     @Override

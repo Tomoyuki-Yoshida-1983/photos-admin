@@ -4,6 +4,9 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
+/**
+ * 基準定数
+ */
 public class StandardsConstants {
 
     public static final String JAVA_IO_TMPDIR;

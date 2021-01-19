@@ -8,6 +8,11 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.Objects;
 
+/**
+ * <p>ファイル名が最大文字数を超えないことを検証するバリデーター</p>
+ * <p>ファイル名が最大文字数を超えた場合、検証エラーとする</p>
+ * <p>ファイル名がNULLまたは空文字の場合、ファイル名が未入力である旨のエラーメッセージを設定して検証エラーとする</p>
+ */
 public class MaxFileNameLengthValidator implements ConstraintValidator<MaxFileNameLength, MultipartFile> {
 
     private int maxFileNameLength;

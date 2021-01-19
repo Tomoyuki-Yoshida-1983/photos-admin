@@ -4,6 +4,9 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * キーワード定数
+ */
 public class KeyWordsConstants {
 
     public static final String KEY_MESSAGE = "message";
@@ -24,11 +27,13 @@ public class KeyWordsConstants {
 
     public static final String NAME_DELETE_FORM = "deleteForm";
 
-    public static final String SYMBOL_LINE_FEED = "\n";
-
     public static final String SYMBOL_BLANK = "";
 
     public static final String SYMBOL_SPACE = " ";
+
+    public static final int NUMBER_ZERO = 0;
+
+    public static final int THUMBNAIL_HEIGHT = 100;
 
     public static final int MAX_FILE_NAME_LENGTH = 50;
 

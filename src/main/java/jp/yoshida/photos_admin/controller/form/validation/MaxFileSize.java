@@ -7,7 +7,9 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
 
-
+/**
+ * ファイルサイズが超過していないことを検証するアノテーション
+ */
 @Constraint(validatedBy = MaxFileSizeValidator.class)
 @Documented
 @Target(ElementType.FIELD)

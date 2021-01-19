@@ -6,7 +6,9 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
 
-
+/**
+ * MIMEタイプが画像ファイルであることを検証するアノテーション
+ */
 @Constraint(validatedBy = ImageFileValidator.class)
 @Documented
 @Target(ElementType.FIELD)
