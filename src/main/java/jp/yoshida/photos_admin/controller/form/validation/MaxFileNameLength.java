@@ -6,7 +6,9 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
 
-
+/**
+ * ファイル名が最大文字数を超えないことを検証するアノテーション
+ */
 @Constraint(validatedBy = MaxFileNameLengthValidator.class)
 @Documented
 @Target(ElementType.FIELD)

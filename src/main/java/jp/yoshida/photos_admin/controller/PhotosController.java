@@ -28,6 +28,9 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 写真の登録・検索・削除をするコントローラークラス
+ */
 @Controller
 @RequiredArgsConstructor
 public class PhotosController {
@@ -51,6 +54,13 @@ public class PhotosController {
         return new DeleteForm();
     }
 
+    /**
+     * <p>写真一覧取得</p>
+     * <p>写真テーブルの写真を全件取得し、写真一覧画面に遷移する。</p>
+     * @param redirectAttributes リダイレクトの際に情報を引き継ぐモデル
+     * @param photosForm 写真一覧フォーム
+     * @return 遷移先画面のパス
+     */
     @GetMapping(UrlsConstants.REQUEST_GET_PHOTOS)
     @NonNull
     public String getPhotos(@NonNull RedirectAttributes redirectAttributes, @NonNull PhotosForm photosForm) {
@@ -67,6 +77,16 @@ public class PhotosController {
         return UrlsConstants.RESPONSE_GET_PHOTOS;
     }
 
+    /**
+     * <p>写真詳細取得</p>
+     * <p>リクエストパスのIDに一致するIDの写真を写真テーブルから検索し、写真詳細画面に遷移する。</p>
+     * <p>写真の検索で業務例外が発生した場合、例外メッセージと情報レベルをリダイレクト属性に保持して写真一覧画面にリダイレクトする。</p>
+     * @param redirectAttributes リダイレクトの際に情報を引き継ぐモデル
+     * @param photoForm 写真フォーム
+     * @param id 検索する写真のID
+     * @param httpServletRequest リクエストオブジェクト
+     * @return 遷移先画面のパス
+     */
     @GetMapping(UrlsConstants.REQUEST_GET_PHOTO)
     @NonNull
     public String getPhoto(
@@ -89,6 +109,18 @@ public class PhotosController {
         return UrlsConstants.RESPONSE_GET_PHOTO;
     }
 
+    /**
+     * <p>写真登録</p>
+     * <p>画面からアップロードされた写真を写真テーブルに登録し、写真一覧画面にリダイレクトする。</p>
+     * <p>画面の入力項目に不正がある場合、例外メッセージと情報レベルをリダイレクト属性に保持して写真一覧画面にリダイレクトする。</p>
+     * <p>写真の登録で業務例外が発生した場合、例外メッセージと情報レベルをリダイレクト属性に保持して写真一覧画面にリダイレクトする。</p>
+     * <p>システム例外が発生した場合、共通エラー画面に遷移する。</p>
+     * @param redirectAttributes リダイレクトの際に情報を引き継ぐモデル
+     * @param photoForm 写真フォーム
+     * @param bindingResult 入力項目の不正チェック結果
+     * @param httpServletRequest リクエストオブジェクト
+     * @return 遷移先画面のパス
+     */
     @PostMapping(UrlsConstants.REQUEST_ADD_PHOTO)
     @NonNull
     public String addPhoto(
@@ -120,6 +152,17 @@ public class PhotosController {
         return UrlsConstants.REDIRECT_GET_PHOTOS;
     }
 
+    /**
+     * <p>写真複数削除</p>
+     * <p>画面でチェックボックスにチェックされたIDに一致するIDの写真を写真テーブルから削除し、写真一覧画面にリダイレクトする。</p>
+     * <p>画面の入力項目に不正がある場合、例外メッセージと情報レベルをリダイレクト属性に保持して写真一覧画面にリダイレクトする。</p>
+     * <p>写真の削除で業務例外が発生した場合、例外メッセージと情報レベルをリダイレクト属性に保持して写真一覧画面にリダイレクトする。</p>
+     * @param redirectAttributes リダイレクトの際に情報を引き継ぐモデル
+     * @param deleteForm 写真削除フォーム
+     * @param bindingResult 入力項目の不正チェック結果
+     * @param httpServletRequest リクエストオブジェクト
+     * @return 遷移先画面のパス
+     */
     @PostMapping(UrlsConstants.REQUEST_DELETE_PHOTOS)
     @NonNull
     public String deletePhotos(
@@ -149,6 +192,15 @@ public class PhotosController {
         return UrlsConstants.REDIRECT_GET_PHOTOS;
     }
 
+    /**
+     * <p>写真削除</p>
+     * <p>リクエストパスのIDに一致するIDの写真を写真テーブルから削除し、写真一覧画面にリダイレクトする。</p>
+     * <p>写真の削除で業務例外が発生した場合、例外メッセージと情報レベルをリダイレクト属性に保持して写真一覧画面にリダイレクトする。</p>
+     * @param redirectAttributes リダイレクトの際に情報を引き継ぐモデル
+     * @param id 削除する写真のID
+     * @param httpServletRequest リクエストオブジェクト
+     * @return 遷移先画面のパス
+     */
     @PostMapping(UrlsConstants.REQUEST_DELETE_PHOTO)
     @NonNull
     public String deletePhoto(

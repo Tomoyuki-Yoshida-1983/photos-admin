@@ -2,6 +2,9 @@ package jp.yoshida.photos_admin.common.exception;
 
 import lombok.Getter;
 
+/**
+ * 写真業務例外
+ */
 public class PhotosBusinessException extends PhotosException {
 
     private static final long serialVersionUID = 1L;

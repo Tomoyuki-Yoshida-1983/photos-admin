@@ -7,6 +7,9 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.Objects;
 
+/**
+ * ファイルサイズが超過していないことを検証するバリデーター
+ */
 public class MaxFileSizeValidator implements ConstraintValidator<MaxFileSize, MultipartFile> {
 
     private long value;

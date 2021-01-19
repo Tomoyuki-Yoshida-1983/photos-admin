@@ -1,5 +1,8 @@
 package jp.yoshida.photos_admin.common.constant;
 
+/**
+ * メッセージ定数
+ */
 public class MessagesConstants {
 
     public static final String ERROR_FILE_IS_NOT_IMAGE

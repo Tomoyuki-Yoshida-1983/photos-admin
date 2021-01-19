@@ -6,7 +6,9 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
 
-
+/**
+ * ファイル名に使用できない文字が含まれていないことを検証するアノテーション
+ */
 @Constraint(validatedBy = PossibleFileNameValidator.class)
 @Documented
 @Target(ElementType.FIELD)
