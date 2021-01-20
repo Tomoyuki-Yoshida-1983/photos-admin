@@ -41,6 +41,24 @@ public class KeyWordsConstants {
 
     public static final int MAX_META_DATA_TEXT_LENGTH = 50;
 
+    public static final String CONFIG_SCHEMA_SQL_PATH = "schema.sql";
+
+    public static final String CONFIG_DB_DRIVER_CLASS_NAME = "org.h2.Driver";
+
+    public static final String CONFIG_DB_URL = "jdbc:h2:./h2db/photos_admin";
+
+    public static final String CONFIG_DB_USERNAME = "username";
+
+    public static final String CONFIG_MESSAGES_BASENAME = "classpath:i18n/messages";
+
+    public static final int CONFIG_MESSAGES_CACHE_SECONDS = -1;
+
+    public static final String CONFIG_MESSAGES_DEFAULT_ENCODING = "UTF-8";
+
+    public static final long CONFIG_SERVLET_MAX_FILE_SIZE = 10 * 1024 * 1024;
+
+    public static final long CONFIG_SERVLET_MAX_REQUEST_SIZE = 11 * 1024 * 1024;
+
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public enum UNIT_FILE_SIZE {
         BYTE("B", 1L),

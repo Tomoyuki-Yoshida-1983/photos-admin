@@ -21,6 +21,7 @@ public class StandardsConstants {
 
         String tmpdir = System.getProperty("java.io.tmpdir");
 
+        // WindowsとLinuxで一時ファイルディレクトリの末尾の区切り文字の有無が異なるため、差異を吸収する。
         if (tmpdir.endsWith(File.separator)) {
             tmpdir = tmpdir.substring(0, tmpdir.length() - 1);
         }
