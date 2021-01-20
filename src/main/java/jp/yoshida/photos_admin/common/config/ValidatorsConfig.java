@@ -8,14 +8,19 @@ import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * バリデーターのコンフィグ
+ */
 @Configuration
 @RequiredArgsConstructor
-public class MessageConfig implements WebMvcConfigurer {
+public class ValidatorsConfig implements WebMvcConfigurer {
 
     private final MessageSource messageSource;
 
     @Bean
     public LocalValidatorFactoryBean validator() {
+
+        // バリデーターのメッセージの参照先をデフォルトのValidationMessages.propertiesからmessages.propertiesに変更する。
         LocalValidatorFactoryBean localValidatorFactoryBean = new LocalValidatorFactoryBean();
         localValidatorFactoryBean.setValidationMessageSource(messageSource);
         return localValidatorFactoryBean;
@@ -23,6 +28,7 @@ public class MessageConfig implements WebMvcConfigurer {
 
     @Override
     public Validator getValidator() {
+
         return validator();
     }
 }
