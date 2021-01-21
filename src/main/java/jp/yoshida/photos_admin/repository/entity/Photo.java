@@ -38,7 +38,7 @@ public class Photo {
     private String mimeType;
 
     /**
-     * 横幅
+     * 幅
      */
     @Length(max = KeyWordsConstants.MAX_META_DATA_TEXT_LENGTH)
     private String width;
