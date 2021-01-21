@@ -44,7 +44,7 @@ public class PhotoDto {
     private String mimeType;
 
     /**
-     * 横幅
+     * 幅
      */
     private String width;
 

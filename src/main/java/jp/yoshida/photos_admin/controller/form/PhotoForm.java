@@ -51,7 +51,7 @@ public class PhotoForm {
     private String mimeType;
 
     /**
-     * 横幅
+     * 幅
      */
     private String width;
 

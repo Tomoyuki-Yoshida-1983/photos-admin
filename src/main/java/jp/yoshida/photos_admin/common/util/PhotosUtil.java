@@ -64,7 +64,7 @@ public class PhotosUtil {
 
             /*
              * サムネイルの高さを固定値として、元の写真の高さからの縮尺を算出して、
-             * 横幅も同じ縮尺となるように設定することで縦横比を保ってサムネイルを作成する。
+             * 幅も同じ縮尺となるように設定することで縦横比を保ってサムネイルを作成する。
              */
             int originalHeight = originalImage.getHeight();
             int thumbnailHeight = KeyWordsConstants.THUMBNAIL_HEIGHT;
