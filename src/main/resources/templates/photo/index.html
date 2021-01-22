@@ -23,26 +23,18 @@
             <table class="p-a-details-table">
                 <tr>
                     <th th:text="#{TEXT_FILE_NAME}"></th>
-                    <td th:text="*{fileName}"></td>
-                </tr>
-                <tr>
                     <th th:text="#{TEXT_WIDTH}"></th>
-                    <td th:text="*{width}"></td>
-                </tr>
-                <tr>
                     <th th:text="#{TEXT_HEIGHT}"></th>
-                    <td th:text="*{height}"></td>
-                </tr>
-                <tr>
                     <th th:text="#{TEXT_SHOOTING_DATE_TIME}"></th>
-                    <td th:text="*{shootingDateTime}"></td>
-                </tr>
-                <tr>
                     <th th:text="#{TEXT_LATITUDE}"></th>
-                    <td th:text="*{latitude}"></td>
+                    <th th:text="#{TEXT_LONGITUDE}"></th>
                 </tr>
                 <tr>
-                    <th th:text="#{TEXT_LONGITUDE}"></th>
+                    <td th:text="*{fileName}"></td>
+                    <td th:text="*{width}"></td>
+                    <td th:text="*{height}"></td>
+                    <td th:text="*{shootingDateTime}"></td>
+                    <td th:text="*{latitude}"></td>
                     <td th:text="*{longitude}"></td>
                 </tr>
             </table>

@@ -2,7 +2,7 @@
             border-collapse: collapse;
         }
 
-        .p-a-summary-table td {
+        .p-a-summary-table th, .p-a-summary-table td {
             border: 1px solid #000000;
         }
 
