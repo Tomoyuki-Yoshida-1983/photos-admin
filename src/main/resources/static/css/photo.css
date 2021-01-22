@@ -6,6 +6,7 @@
             border: 1px solid #000;
         }
 
-        th {
-            text-align: right;
+        img {
+            max-width: 100%;
+            height: auto;
         }

@@ -25,13 +25,13 @@
                                         <img th:src="|data:image/jpg;base64,${photo.thumbnail}|">
                                     </a>
                                 </td>
-                                <td><p th:text="#{TEXT_FILE_NAME}"></p></td>
-                                <td><p th:text="#{TEXT_WIDTH}"></p></td>
-                                <td><p th:text="#{TEXT_HEIGHT}"></p></td>
-                                <td><p th:text="#{TEXT_SHOOTING_DATE_TIME}"></p></td>
-                                <td><p th:text="#{TEXT_LATITUDE}"></p></td>
-                                <td><p th:text="#{TEXT_LONGITUDE}"></p></td>
-                                <td><p th:text="#{TEXT_DELETE}"></p></td>
+                                <th><p th:text="#{TEXT_FILE_NAME}"></p></th>
+                                <th><p th:text="#{TEXT_WIDTH}"></p></th>
+                                <th><p th:text="#{TEXT_HEIGHT}"></p></th>
+                                <th><p th:text="#{TEXT_SHOOTING_DATE_TIME}"></p></th>
+                                <th><p th:text="#{TEXT_LATITUDE}"></p></th>
+                                <th><p th:text="#{TEXT_LONGITUDE}"></p></th>
+                                <th><p th:text="#{TEXT_DELETE}"></p></th>
                             </tr>
                             <tr th:if="${seq} == 2" class="p-a-bottom">
                                 <td><p th:text="${photo.fileName}"></p></td>
