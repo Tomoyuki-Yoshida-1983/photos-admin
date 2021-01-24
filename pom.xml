@@ -13,7 +13,7 @@
 
     <groupId>jp.yoshida</groupId>
     <artifactId>photos-admin</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0.RELEASE</version>
     <name>Photos Admin System</name>
     <description>A web system that allows users to upload and view photo and image files.</description>
 
