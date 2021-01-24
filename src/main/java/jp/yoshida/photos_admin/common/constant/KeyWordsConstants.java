@@ -45,7 +45,7 @@ public class KeyWordsConstants {
 
     public static final String CONFIG_DB_DRIVER_CLASS_NAME = "org.h2.Driver";
 
-    public static final String CONFIG_DB_URL = "jdbc:h2:./h2db/photos_admin";
+    public static final String CONFIG_DB_URL = "jdbc:h2:./h2db/photos-admin";
 
     public static final String CONFIG_DB_USERNAME = "username";
 
