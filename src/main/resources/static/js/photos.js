@@ -33,6 +33,11 @@ var PhotosJs = {
             return true;
         }
 
+        if(!photos[0].type.match(MIME_TYPE_ANY_IMAGE)) {
+            alert(ERROR_FILE_IS_NOT_IMAGE);
+            return false;
+        }
+
         if(photos[0].name.length > MAX_FILE_NAME_LENGTH) {
             alert(ERROR_FILE_NAME_LENGTH_EXCEEDED);
             return false;
