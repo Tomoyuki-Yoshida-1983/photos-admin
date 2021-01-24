@@ -13,8 +13,6 @@
             <span th:unless="*{prevId} != null" th:text="#{TEXT_PREV_PHOTO}"></span>&nbsp;/&nbsp;
             <a th:if="*{nextId} != null" th:href="@{/photo/{id} (id = *{nextId})}" th:text="#{TEXT_NEXT_PHOTO}"></a>
             <span th:unless="*{nextId} != null" th:text="#{TEXT_NEXT_PHOTO}"></span>&nbsp;&nbsp;
-            <a th:href="|data:*{mimeType};base64,*{rawPhoto}|" th:download="*{fileName}"
-               th:text="#{TEXT_DOWNLOAD_THIS_PHOTO}"></a>&nbsp;&nbsp;
             <input type="submit" th:value="#{TEXT_DELETE_THIS_PHOTO}" onclick="return PhotoJs.preDeleteCheck()">
         </form>
         <p><a th:href="@{/photos}" th:text="#{TEXT_BACK_TO_PHOTOS_LIST}"></a></p>
@@ -49,8 +47,6 @@
             <span th:unless="*{prevId} != null" th:text="#{TEXT_PREV_PHOTO}"></span>&nbsp;/&nbsp;
             <a th:if="*{nextId} != null" th:href="@{/photo/{id} (id = *{nextId})}" th:text="#{TEXT_NEXT_PHOTO}"></a>
             <span th:unless="*{nextId} != null" th:text="#{TEXT_NEXT_PHOTO}"></span>&nbsp;&nbsp;
-            <a th:href="|data:*{mimeType};base64,*{rawPhoto}|" th:download="*{fileName}"
-               th:text="#{TEXT_DOWNLOAD_THIS_PHOTO}"></a>&nbsp;&nbsp;
             <input type="submit" th:value="#{TEXT_DELETE_THIS_PHOTO}" onclick="return PhotoJs.preDeleteCheck()">
         </form>
         <p><a th:href="@{/photos}" th:text="#{TEXT_BACK_TO_PHOTOS_LIST}"></a></p>
