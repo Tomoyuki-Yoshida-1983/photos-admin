@@ -77,6 +77,7 @@
             var MESSAGE = /*[[${message ?: ""}]]*/ "";
             var DOM_NAME_DELETE_IDS = "deleteIds";
             var DOM_ID_SENDING_PHOTO = "sendingPhoto";
+            var MIME_TYPE_ANY_IMAGE = new RegExp("^image/.*$");
             var MAX_FILE_NAME_LENGTH = 50;
             var MAX_FILE_SIZE_COEFFICIENT = 1;
             var MAX_FILE_SIZE_MAGNIFICATION = 1024 * 1024;
@@ -84,6 +85,9 @@
             var MAX_FILE_SIZE_UNIT = "MB"
             var ERROR_DELETE_IDS_IS_EMPTY = (/*[[#{NotEmpty.deleteIds}]]*/ "")
                     .replace(/\{0\}/g, /*[[#{deleteIds}]]*/　"");
+            var ERROR_FILE_IS_NOT_IMAGE
+                    = (/*[[#{jp.yoshida.photos_admin.controller.form.validation.ImageFile.message}]]*/ "")
+                    .replace(/\{0\}/g, /*[[#{sendingPhoto}]]*/　"");
             var ERROR_FILE_NAME_LENGTH_EXCEEDED
                     = (/*[[#{jp.yoshida.photos_admin.controller.form.validation.MaxFileNameLength.message}]]*/ "")
                     .replace(/\{0\}/g, /*[[#{sendingPhoto}]]*/ "")
